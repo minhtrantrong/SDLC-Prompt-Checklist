@@ -17,48 +17,52 @@ The materials are intended to support teams working with AI tools to create stan
 
 ## Repository Contents
 
+Documents are organized by SDLC phase, in folders matching the phase numbers in [AI_SDLC-SOP.md](./AI_SDLC-SOP.md):
+
+| Folder | SDLC phase | Contents |
+|---|---|---|
+| [`requirements/`](./requirements) | Requirements and discovery (5.2) | Business requirements document template |
+| [`analysis/`](./analysis) | Analysis (5.3) | PRD prompts and the requirements checklist |
+| [`design/`](./design) | Design, modeling (5.4) | SAD, blueprint, UML diagram, API, database and UI/UX prompts with their checklists |
+| [`verification/`](./verification) | Verification and testing (5.7) | Test plan prompt and checklist |
+
 ### Prompt Templates
 
-The repository includes prompt files for common SDLC activities:
+Prompt files for common SDLC activities, kept in the folder of the phase that uses them:
 
-- `activityDiagram_prompt.md`
-- `apiDesign_prompt.md`
-- `bluePrint_design_prompt.md`
-- `classDiagram_prompt.md`
-- `componentDiagram_prompt.md`
-- `databaseDesign_GraphrDB_prompt.md`
-- `databaseDesign_NoSQL_prompt.md`
-- `databaseDesign_SQL_prompt.md`
-- `databaseDesign_VectorDB_prompt.md`
-- `deploymentDiagram_prompt.md`
-- `sequenceDiagram_prompt.md`
-- `testPlan_prompt.md`
-- `UI-UX-Design_prompt.md`
-- `useCase_prompt.md`
+- `requirements/` — the BRD template
+- `analysis/PRD_prompt.md`, `analysis/PRD_Prompt_IEEE_standard.md`, `analysis/PRD_Prompt_with_template.md`
+- `design/SAD_prompt.md`, `design/SAD_Prompt_IEEE_standard.md`, `design/SAD_Prompt_with_template_.md`
+- `design/bluePrint_design_prompt.md`
+- `design/classDiagram_prompt.md`, `design/componentDiagram_prompt.md`, `design/deploymentDiagram_prompt.md`
+- `design/sequenceDiagram_prompt.md`, `design/activityDiagram_prompt.md`, `design/useCase_prompt.md`
+- `design/apiDesign_prompt.md`, `design/UI-UX-Design_prompt.md`
+- `design/databaseDesign_SQL_prompt.md`, `design/databaseDesign_NoSQL_prompt.md`, `design/databaseDesign_GraphrDB_prompt.md`, `design/databaseDesign_VectorDB_prompt.md`
+- `verification/testPlan_prompt.md`
 
 ### Checklist Artifacts
 
-Supporting checklist spreadsheet files are also included for review and quality alignment, such as:
+Supporting checklist spreadsheets sit next to the prompts they validate:
 
-- `API_Design_IEEE-1016-2009Checklist.xlsx`
-- `Database_Design_Checklist.xlsx`
-- `Test_Plan_IEEE_829_Checklist.xlsx`
-- `UI_UX_Design_IEEE-1016-2009_Checklist.xlsx`
-- `BluePrint_Design_IEEE_1016_2009_Checklist.xlsx`
-- `Activity_Diagram_UML2.0_Checklist.xlsx`
-- `...`
+- `analysis/PRD_IEEE_29148_Checklist.xlsx`
+- `design/BluePrint_Design_IEEE_1016_2009_Checklist.xlsx`, `design/SAD_IEEE_1016_Checklist.xlsx`
+- `design/Class_Diagram_UML2.0_Checklist.xlsx`, `design/Component_Diagram_UML2.0_Checklist.xlsx`, `design/Deployment_Diagram_UML2.0_Checklist.xlsx`
+- `design/Sequence_Diagram_UML2.0_Checklist.xlsx`, `design/Activity_Diagram_UML2.0_Checklist.xlsx`, `design/UseCase_Document_UML2.0_Checklist.xlsx`
+- `design/API_Design_IEEE-1016-2009Checklist.xlsx`, `design/UI_UX_Design_IEEE-1016-2009_Checklist.xlsx`
+- `design/Database_Design_Checklist.xlsx`, `design/Polyglot_DB_Design_Checklist.xlsx`, `design/Checklist_Database Design Review.xlsx`
+- `verification/Test_Plan_IEEE_829_Checklist.xlsx`
 
 ### Standards:
 
-- IEEE 1106, 829, ..
+- IEEE 1016-2009, IEEE 829, IEEE 29148
 - UML 2.0
 
 ## Typical Usage
 
-1. Choose the relevant prompt file for the design or QA activity you need.
+1. Choose the prompt for the phase you are working in, from that phase's folder.
 2. Fill in the placeholder system or project details in the prompt.
 3. Use the prompt with your preferred AI assistant or generation workflow.
-4. Save the generated output into a docs folder or project workspace.
+4. Save the generated output into the target project's `docs/<phase>` folder as defined in [AI_SDLC-SOP.md](./AI_SDLC-SOP.md).
 5. Use the spreadsheet checklists to validate completeness and standards alignment.
 
 ## Suggested Workflow
