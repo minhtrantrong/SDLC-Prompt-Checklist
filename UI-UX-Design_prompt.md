@@ -2,7 +2,7 @@
 
 > **Version:** 1.0  
 > **Input:** IEEE 1016-2009 Software Design Description (Blueprint)  
-> **Output:** Figma Frames (design.figma.com) and/or HTML Pages [save into ./docs/design/UI_UX_design folder]  
+> **Output:** Figma Frames (design.figma.com) and/or HTML Pages [save into ./docs/04-design/UI_UX_design folder]  
 > **Purpose:** Transform architectural blueprints into comprehensive, user-centered UI/UX designs with full traceability to stakeholder concerns, user personas, and interaction requirements.
 
 ---
