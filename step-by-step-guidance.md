@@ -415,6 +415,10 @@ to IEEE 29148, then auditing it before baseline (SOP §5.2).
 
 ```text
 @<path-to-folder>/analysis/BRD_Elicitation_Prompt_IEEE_standard.md
+```
+Or 
+
+```text
 @<path-to-folder>/analysis/BRD_Prompt_IEEE_standard.md
 ```
 
