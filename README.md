@@ -27,6 +27,7 @@ Documents are organized by SDLC phase, in folders named after the phase. The pha
 | [`development/`](./development) | Planning (5.5) | `docs/05-development/` | Software Development Plan and task breakdown (WBS) prompts, plus the ISO/IEC/IEEE 24748-5 checklist |
 | [`verification/`](./verification) | Verification and testing (5.7) | `docs/07-verification/` | Test plan and code review prompts and checklists |
 | [`agentic-sdlc-process.md`](./agentic-sdlc-process.md) | All phases | — | Phase-by-phase artifact flow for the whole process |
+| [`step-by-step-guidance.md`](./step-by-step-guidance.md) | All phases | — | Project-agnostic, step-by-step playbook: the prompt and checklist to use at each step, plus the gate and the customization rules |
 
 ### Prompt Templates
 
