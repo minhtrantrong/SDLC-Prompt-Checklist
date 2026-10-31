@@ -52,7 +52,7 @@ One person may hold multiple roles where team size requires it, but the author m
 | 5.2 Requirements and discovery | docs/02-requirements/ | BRD.md |
 | 5.3 Analysis | docs/03-analysis/ | SRS.md or PRD.md, USER_STORIES.md |
 | 5.4 Design, modeling | docs/04-design/ | SAD.md, the blueprint design (.md or .sql), diagrams/*.drawio, UI_UX_design/ |
-| 5.5 Planning | docs/05-planning/ | PLAN.md, tasks/*.md |
+| 5.5 Planning | docs/05-development/ | Software_Development_Plan.md, tasks/*.md |
 
 A phase that keeps a document rather than a work item, pull request or system record files it in its own numbered sub-folder as well — docs/07-verification/, docs/09-release/, docs/10-operations/, docs/11-decommissioning/. Records that live in the tracker, the review system or the incident system stay there and are linked from the work item instead of being duplicated under `docs/`.
 
@@ -126,7 +126,7 @@ Use the highest applicable tier. Existing organizational or regulatory controls 
 2. Agentic in planning: the PM or tech lead should create an agent for this role, the AI agent should be active in deriving the work breakdown, dependencies, sequencing and estimates from the SAD and the USER_STORIES.md, and put all assumptions, questions or requests that it need to make clear.
 3. Plan: break the design into deliverable slices, each sized to a reviewable change, with sequencing, dependencies, estimates, owners and the requirement IDs it satisfies.
 4. Decisions and risks: record significant architecture and scope decisions with their rationale, and keep open risks, unknowns and gaps visible with an owner until resolved.
-5. Release: a PLAN.md and all task files as docs/05-planning/tasks/task_name-or-id.md, or the equivalent backlog or roadmap entries linked from the work item. Each task must be simple and clear, ready for coding (like a module, a class, a method or a function) and could be finished with a few iterations by agents with a small LLM model. 
+5. Release: a Software_Development_Plan.md and all task files as docs/05-development/tasks/task_name-or-id.md, or the equivalent backlog or roadmap entries linked from the work item. Each task must be simple and clear, ready for coding (like a module, a class, a method or a function) and could be finished with a few iterations by agents with a small LLM model. 
 6. Review and approval: Request PM/PO for reviewing the scope and sequencing, and the tech lead / architect for the technical feasibility and dependencies.
 
 ### 5.6 Implementation

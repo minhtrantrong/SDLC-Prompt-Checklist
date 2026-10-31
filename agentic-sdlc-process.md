@@ -112,8 +112,8 @@
 | 3 | **Ghi nhận quyết định & rủi ro** — Record decisions with rationale. Ghi open risks, unknowns, gaps — mỗi item có owner. |
 | 4 | **PM/PO + Tech Lead Review** — PM/PO duyệt scope & sequencing. Tech Lead duyệt technical feasibility. |
 
-**📄 Tài liệu tạo ra:** `PLAN.md` · `tasks/*.md`
-**📁 Lưu tại:** `docs/05-implement/`
+**📄 Tài liệu tạo ra:** `Software_Development_Plan.md` · `tasks/*.md`
+**📁 Lưu tại:** `docs/05-development/`
 
 ---
 
@@ -200,7 +200,7 @@
 | **2. Requirements** | `BRD.md` | IEEE 29148 · BRD prompts | PM/PO |
 | **3. Analysis** | `SRS.md / PRD.md` → `USER_STORIES.md` → `traceability.md` | IEEE 29148 · PRD prompts | PM/PO + Tech Lead |
 | **4. Design** | `SAD.md` → `ADR-*.md` → `diagrams/` → `blueprint.md` → `openapi.yaml` → `data/model.md` → `UI_UX/` | IEEE 1016 · ISO 42010 · UML 2.0 · 4+1 · C4 | Architect + Tech Lead |
-| **5. Planning** | `PLAN.md` → `tasks/*.md` | — | PM/PO + Tech Lead |
+| **5. Planning** | `Software_Development_Plan.md` → `tasks/*.md` | — | PM/PO + Tech Lead |
 | **6. Build** | `AGENTS.md` → `app/` → `tests/` → `traceability.md ↻` | ISO 25010 · Conventional Commits | Human owner |
 | **7. Verify** | `test-report` → `CI log` → `coverage` | IEEE 829 · IEEE 29119 · testPlan prompt | QA + Reviewer |
 | **8. Review** | `PR + review record` → `approval` | IEEE 1028 · Code Review checklist | Reviewer ≠ Author |

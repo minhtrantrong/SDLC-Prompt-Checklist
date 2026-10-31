@@ -24,6 +24,7 @@ Documents are organized by SDLC phase, in folders matching the phase numbers in 
 | [`requirements/`](./requirements) | Requirements and discovery (5.2) | Business requirements document template |
 | [`analysis/`](./analysis) | Analysis (5.3) | BRD and PRD prompts and the requirements checklist |
 | [`design/`](./design) | Design, modeling (5.4) | SAD, blueprint, UML diagram, API, database and UI/UX prompts with their checklists |
+| [`05-development/`](./05-development) | Development planning (5.5) | Software Development Plan prompt and ISO/IEC/IEEE 24748-5 checklist |
 | [`verification/`](./verification) | Verification and testing (5.7) | Test plan prompt and checklist |
 
 ### Prompt Templates
@@ -40,6 +41,7 @@ Prompt files for common SDLC activities, kept in the folder of the phase that us
 - `design/sequenceDiagram_prompt.md`, `design/activityDiagram_prompt.md`, `design/useCase_prompt.md`
 - `design/apiDesign_prompt.md`, `design/UI-UX-Design_prompt.md`
 - `design/databaseDesign_SQL_prompt.md`, `design/databaseDesign_NoSQL_prompt.md`, `design/databaseDesign_GraphrDB_prompt.md`, `design/databaseDesign_VectorDB_prompt.md`
+- `05-development/DevPlan_ISO_24748_5_Prompt.md`
 - `verification/testPlan_prompt.md`
 
 ### Checklist Artifacts
@@ -52,11 +54,13 @@ Supporting checklist spreadsheets sit next to the prompts they validate:
 - `design/Sequence_Diagram_UML2.0_Checklist.xlsx`, `design/Activity_Diagram_UML2.0_Checklist.xlsx`, `design/UseCase_Document_UML2.0_Checklist.xlsx`
 - `design/API_Design_IEEE-1016-2009Checklist.xlsx`, `design/UI_UX_Design_IEEE-1016-2009_Checklist.xlsx`
 - `design/Database_Design_Checklist.xlsx`, `design/Polyglot_DB_Design_Checklist.xlsx`, `design/Checklist_Database Design Review.xlsx`
+- `05-development/DevPlan_ISO_24748_5_Checklist.xlsx`
 - `verification/Test_Plan_IEEE_829_Checklist.xlsx`
 
 ### Standards:
 
 - IEEE 1016-2009, IEEE 829, IEEE 29148
+- ISO/IEC/IEEE 24748-5:2017
 - UML 2.0
 
 ## Typical Usage
