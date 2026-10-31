@@ -24,7 +24,7 @@ Documents are organized by SDLC phase, in folders named after the phase. The pha
 | [`requirements/`](./requirements) | Requirements and discovery (5.2) | `docs/02-requirements/` | Business requirements document template |
 | [`analysis/`](./analysis) | Analysis (5.3); BRD prompts serve 5.2 | `docs/02-requirements/`, `docs/03-analysis/` | BRD and PRD prompts and the requirements checklists |
 | [`design/`](./design) | Design, modeling (5.4) | `docs/04-design/` | SAD, blueprint, UML diagram, API, database and UI/UX prompts with their checklists |
-| [`development/`](./development) | Planning (5.5) | `docs/05-development/` | Software Development Plan prompt and ISO/IEC/IEEE 24748-5 checklist |
+| [`development/`](./development) | Planning (5.5) | `docs/05-development/` | Software Development Plan and task breakdown (WBS) prompts, plus the ISO/IEC/IEEE 24748-5 checklist |
 | [`verification/`](./verification) | Verification and testing (5.7) | `docs/07-verification/` | Test plan and code review prompts and checklists |
 | [`agentic-sdlc-process.md`](./agentic-sdlc-process.md) | All phases | — | Phase-by-phase artifact flow for the whole process |
 
@@ -43,6 +43,7 @@ Prompt files for common SDLC activities, kept in the folder of the phase that us
 - `design/apiDesign_prompt.md`, `design/UI-UX-Design_prompt.md`
 - `design/databaseDesign_SQL_prompt.md`, `design/databaseDesign_NoSQL_prompt.md`, `design/databaseDesign_GraphrDB_prompt.md`, `design/databaseDesign_VectorDB_prompt.md`
 - `development/DevPlan_ISO_24748_5_Prompt.md`
+- `development/TaskBreakdown_ISO_21511_Prompt.md`
 - `verification/testPlan_prompt.md`
 
 ### Checklist Artifacts
@@ -61,7 +62,7 @@ Supporting checklist spreadsheets sit next to the prompts they validate:
 ### Standards:
 
 - IEEE 1016-2009, IEEE 829, IEEE 1028, IEEE 29148, IEEE 29119
-- ISO/IEC/IEEE 24748-5:2017, ISO/IEC/IEEE 42010
+- ISO/IEC/IEEE 24748-5:2017, ISO 21511:2018 (WBS), ISO/IEC/IEEE 42010
 - ISO/IEC 25010
 - UML 2.0
 
@@ -77,6 +78,7 @@ Supporting checklist spreadsheets sit next to the prompts they validate:
 
 - Requirements and architecture inputs -> blueprint / API / database prompts
 - Design and user experience inputs -> UI/UX prompt
+- Approved development plan plus design inputs -> WBS and task breakdown prompt
 - Verification and quality inputs -> test plan prompt
 
 ## Notes

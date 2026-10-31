@@ -107,7 +107,7 @@
 
 | Bước | Nội dung |
 |:----:|----------|
-| 1 | **Phân rã công việc (Work Breakdown)** — Agent phân tích SAD + USER_STORIES → chia thành task nhỏ. Mỗi task đủ nhỏ cho agent xử lý trong vài vòng lặp. |
+| 1 | **Phân rã công việc (Work Breakdown)** — Agent phân tích SDP + SAD + USER_STORIES → dựng WBS hướng deliverable, WBS dictionary và task card. Mỗi task đủ nhỏ cho agent xử lý trong vài vòng lặp.<br>Prompt: `development/TaskBreakdown_ISO_21511_Prompt.md` |
 | 2 | **Xác định thứ tự, phụ thuộc, ước lượng** — Mỗi task có: owner, FR-ID, dependencies, estimate, file chạm, rủi ro. Ưu tiên vertical slice. |
 | 3 | **Ghi nhận quyết định & rủi ro** — Record decisions with rationale. Ghi open risks, unknowns, gaps — mỗi item có owner. |
 | 4 | **PM/PO + Tech Lead Review** — PM/PO duyệt scope & sequencing. Tech Lead duyệt technical feasibility. |
@@ -200,7 +200,7 @@
 | **2. Requirements** | `docs/02-requirements/` | `BRD.md` | IEEE 29148 · `analysis/BRD_Prompt_IEEE_standard.md` | PM/PO |
 | **3. Analysis** | `docs/03-analysis/` | `SRS.md / PRD.md` → `USER_STORIES.md` → `traceability.md` | IEEE 29148 · `analysis/PRD_prompt.md` | PM/PO + Tech Lead |
 | **4. Design** | `docs/04-design/` | `SAD.md` → `ADR-*.md` → `diagrams/` → `blueprint.md` → `openapi.md` → `database-design.md` → `UI_UX_design/` | IEEE 1016 · ISO 42010 · UML 2.0 · 4+1 · C4 | Architect + Tech Lead |
-| **5. Planning** | `docs/05-development/` | `Software_Development_Plan.md` → `tasks/*.md` | ISO/IEC/IEEE 24748-5 · `development/DevPlan_ISO_24748_5_Prompt.md` | PM/PO + Tech Lead |
+| **5. Planning** | `docs/05-development/` | `Software_Development_Plan.md` → `WBS.md` → `tasks/*.md` | ISO/IEC/IEEE 24748-5 · ISO 21511 · `development/DevPlan_ISO_24748_5_Prompt.md` · `development/TaskBreakdown_ISO_21511_Prompt.md` | PM/PO + Tech Lead |
 | **6. Build** | code trong repo; bản ghi ở PR/work item | `AGENTS.md` → `app/` → `tests/` → `traceability.md ↻` | ISO 25010 · Conventional Commits | Human owner |
 | **7. Verify** | `docs/07-verification/` | `test-report` → `CI log` → `coverage` | IEEE 829 · IEEE 29119 · `verification/testPlan_prompt.md` | QA + Reviewer |
 | **8. Review** | bản ghi ở PR/work item | `PR + review record` → `approval` | IEEE 1028 · `verification/Code_Review_IEEE_1028_Checklist.xlsx` | Reviewer ≠ Author |
