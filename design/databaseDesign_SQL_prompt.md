@@ -109,4 +109,4 @@ Create a comprehensive SQL Database Design for [SYSTEM NAME] including complete 
 - Triggers: [e.g., trg_{table}_{action}_{timing}]
 
 **Output:**
-- Save the output as a .md or [.sql] file into [your document folder such as ./docs]
+- Save the output as a .md or [.sql] file into `docs/04-design/`

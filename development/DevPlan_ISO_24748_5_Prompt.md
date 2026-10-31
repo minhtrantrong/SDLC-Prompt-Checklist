@@ -1,6 +1,6 @@
 # Prompt — Software Development Plan (SDP) per ISO/IEC/IEEE 24748-5
 
-> **Cách dùng:** Copy toàn bộ file này vào agent, điền các placeholder `[...]` ở mục 2.4, đính kèm các tài liệu ở mục 2.1, rồi yêu cầu agent thực thi. Agent **phải** ghi kết quả vào đúng đường dẫn `05-development/Software_Development_Plan.md` và không được chỉ in tài liệu ra chat.
+> **Cách dùng:** Copy toàn bộ file này vào agent, điền các placeholder `[...]` ở mục 2.4, đính kèm các tài liệu ở mục 2.1, rồi yêu cầu agent thực thi. Agent **phải** ghi kết quả vào đúng đường dẫn `docs/05-development/Software_Development_Plan.md` và không được chỉ in tài liệu ra chat.
 
 ---
 
@@ -92,8 +92,8 @@ If `OUTPUT_LANGUAGE` is Vietnamese, write the SDP in Vietnamese but keep standar
 |---|---|
 | **Artifact** | Software Development Plan (SDP) |
 | **File name** | `Software_Development_Plan.md` |
-| **Directory** | `05-development/` |
-| **Repo-relative path** | `05-development/Software_Development_Plan.md` |
+| **Directory** | `docs/05-development/` |
+| **Repo-relative path** | `docs/05-development/Software_Development_Plan.md` |
 | **Format** | Markdown, UTF-8 |
 | **Language** | Per `OUTPUT_LANGUAGE` above |
 | **Document ID** | Per `SDP_DOCUMENT_ID` above |
@@ -108,16 +108,16 @@ Only if the user explicitly requests a separate audit artifact:
 |---|---|
 | **Artifact** | SDP compliance and self-audit report |
 | **File name** | `SDP_Compliance_Report.md` |
-| **Directory** | `05-development/` |
-| **Repo-relative path** | `05-development/SDP_Compliance_Report.md` |
+| **Directory** | `docs/05-development/` |
+| **Repo-relative path** | `docs/05-development/SDP_Compliance_Report.md` |
 
 If no separate report is requested, put the compliance matrix and checklist results in **Appendix D** of the SDP.
 
 ### 3.3 File-writing rules
 
 1. **Write the file with the available file-writing tool.** Do not only print the document in chat.
-2. **Create parent directories only if needed.** The `05-development/` directory already exists in this repository.
-3. **If `05-development/Software_Development_Plan.md` already exists:**
+2. **Create parent directories only if needed.** Create `docs/05-development/` if it does not exist.
+3. **If `docs/05-development/Software_Development_Plan.md` already exists:**
    - Read it first.
    - Preserve its history in the **Change Log**.
    - Update in place only when the user asked for an update.
@@ -130,7 +130,7 @@ If no separate report is requested, put the compliance matrix and checklist resu
 
 The task is done only when all of the following are true:
 
-- [ ] `05-development/Software_Development_Plan.md` exists.
+- [ ] `docs/05-development/Software_Development_Plan.md` exists.
 - [ ] The document contains all mandatory sections in Section 4.
 - [ ] Every section has substantive content; no empty headings.
 - [ ] Every material fact is traceable to an input or explicitly marked as an assumption.
@@ -173,7 +173,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **2.2 Objectives and success measures** — SMART objectives, linked to BRD/intent IDs; include measurable acceptance at project level.
 - **2.3 Product and system description** — What is being built, major capabilities, boundaries, and relationship to existing systems.
 - **2.4 System context and external interfaces** — External systems, users, data flows, integration points, and dependencies; reference SAD and API/DB designs.
-- **2.5 Stakeholders and concerns** — Stakeholder groups, roles, concerns, influence, and engagement needs; reference `stakeholders.md`.
+- **2.5 Stakeholders and concerns** — Stakeholder groups, roles, concerns, influence, and engagement needs; reference `docs/01-intake/stakeholders.md`.
 - **2.6 Assumptions, constraints, and dependencies** — Technical, organizational, contractual, legal, and schedule-related.
 - **2.7 Applicable standards, regulations, and compliance obligations** — ISO/IEC/IEEE 24748-5, ISO/IEC/IEEE 12207, ISO/IEC/IEEE 29148, ISO/IEC 25010, ISO/IEC/IEEE 29119, ISO/IEC 27001, and any sector-specific requirements.
 - **2.8 Risk tier and criticality** — Low/Medium/High with rationale and the controls that follow from the tier.
@@ -271,7 +271,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **Appendix A — Traceability matrix:** input requirement/design ID → SDP section/work package → deliverable → verification method.
 - **Appendix B — RACI matrix:** activity × role, with `R`, `A`, `C`, `I`.
 - **Appendix C — Risk register:** full register with score, response, owner, trigger, and contingency.
-- **Appendix D — ISO/IEC/IEEE 24748-5 checklist self-audit:** all 22 items from `05-development/DevPlan_ISO_24748_5_Checklist.xlsx`, with status and evidence.
+- **Appendix D — ISO/IEC/IEEE 24748-5 checklist self-audit:** all 22 items from `development/DevPlan_ISO_24748_5_Checklist.xlsx`, with status and evidence.
 - **Appendix E — Assumptions, constraints, and open items:** every assumption, constraint, conflict, and `TBD` with owner and due date.
 - **Appendix F — Glossary:** project and standards terminology.
 - **Appendix G — References:** full reference list.
@@ -306,7 +306,7 @@ Use the following mapping to ensure the SDP covers the standard's planning and c
 
 ### 5.2 Checklist self-audit — 22 items
 
-Read `05-development/DevPlan_ISO_24748_5_Checklist.xlsx` and assess every item. If the agent cannot read `.xlsx` directly, extract the sheet with a spreadsheet library or by unzipping the workbook XML; do not skip the audit. Record the result in **Appendix D** with this format:
+Read `development/DevPlan_ISO_24748_5_Checklist.xlsx` and assess every item. If the agent cannot read `.xlsx` directly, extract the sheet with a spreadsheet library or by unzipping the workbook XML; do not skip the audit. Record the result in **Appendix D** with this format:
 
 | # | Category | Checklist item | SDP section / evidence | Status | Gap / action | Owner | Due date |
 |---|---|---|---|---|---|---|---|
@@ -381,7 +381,7 @@ Follow these steps in order.
 2. Build the **Input Inventory** table from Section 2.2.
 3. Mark each input as `Available`, `Missing`, `Outdated`, or `Conflicting`.
 4. Extract the project parameters from Section 2.4.
-5. Read `05-development/DevPlan_ISO_24748_5_Checklist.xlsx`.
+5. Read `development/DevPlan_ISO_24748_5_Checklist.xlsx`.
 
 ### Step 2 — Build the input gap and conflict list
 
@@ -446,7 +446,7 @@ If any item fails, fix the document before writing the final file.
 
 ### Step 6 — Write the file
 
-1. Write the complete SDP to `05-development/Software_Development_Plan.md`.
+1. Write the complete SDP to `docs/05-development/Software_Development_Plan.md`.
 2. Confirm the file exists and is non-empty.
 3. Do not write the SDP to any other location unless the user explicitly asks.
 
@@ -454,7 +454,7 @@ If any item fails, fix the document before writing the final file.
 
 Respond in chat with a concise summary (do not paste the whole document):
 
-- **Output:** `05-development/Software_Development_Plan.md`
+- **Output:** `docs/05-development/Software_Development_Plan.md`
 - **Document ID / version / status**
 - **Inputs used** and **inputs missing**
 - **Key assumptions and open items**
@@ -471,7 +471,7 @@ Use this template for the chat response after writing the file:
 ```markdown
 ## SDP created
 
-**Output:** `05-development/Software_Development_Plan.md`
+**Output:** `docs/05-development/Software_Development_Plan.md`
 **Document ID:** [ID]
 **Version / status:** [version] / [status]
 **Language:** [Vietnamese/English]
@@ -508,7 +508,7 @@ Review and approve the SDP with the project manager, technical lead, and QA lead
 1. **Do not invent project facts.** If the input does not support a statement, mark it as an assumption or `TBD`.
 2. **Do not approve your own work.** The SDP is a draft until a human approver signs it.
 3. **Do not modify other phase artifacts.** The SDP references them; it does not rewrite them.
-4. **Do not create a competing plan.** The only required output is `05-development/Software_Development_Plan.md`.
+4. **Do not create a competing plan.** The only required output is `docs/05-development/Software_Development_Plan.md`.
 5. **Do not omit the compliance audit.** Every SDP must include Appendix D with all 22 checklist items.
 6. **Do not use confidential data in examples.** Use placeholders and synthetic data.
 7. **Do not claim standards compliance you cannot evidence.** Use `Pass`, `Partial`, or `Gap` honestly.
@@ -522,9 +522,9 @@ Review and approve the SDP with the project manager, technical lead, and QA lead
 |---|---|
 | What is the output? | A complete Software Development Plan (SDP) in Markdown |
 | What is the file name? | `Software_Development_Plan.md` |
-| Where is it saved? | `05-development/Software_Development_Plan.md` |
+| Where is it saved? | `docs/05-development/Software_Development_Plan.md` |
 | What standard does it follow? | ISO/IEC/IEEE 24748-5:2017, aligned with ISO/IEC/IEEE 12207 |
 | What inputs are required? | Prior-phase artifacts listed in Section 2.1; attach them or provide repo paths |
 | What if inputs are missing? | Record the gap in Appendix E; do not fabricate |
-| How is quality checked? | 22-item checklist in `05-development/DevPlan_ISO_24748_5_Checklist.xlsx` and the self-audit in Section 7, Step 5 |
+| How is quality checked? | 22-item checklist in `development/DevPlan_ISO_24748_5_Checklist.xlsx` and the self-audit in Section 7, Step 5 |
 | Who approves? | Project Manager, Technical Lead/Architect, QA Lead, and business owner as applicable |

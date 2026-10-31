@@ -1,7 +1,7 @@
 
 > **Version:** 1.0
 > **Standard:** IEEE 29148-2018 (Systems and software engineering — Life cycle processes — Requirements engineering)
-> **SDLC phase:** 5.2 Requirements and discovery (output: `docs/requirements/BRD.md`)
+> **SDLC phase:** 5.2 Requirements and discovery (output: `docs/02-requirements/BRD.md`)
 > **Inputs:** Business case, sponsor brief, stakeholder interviews, current-state process, market/regulatory evidence, existing system documentation
 > **Purpose:** Produce a complete, reviewable BRD that states the business problem, the desired business outcomes, and the stakeholder-level requirements that downstream PRD/SRS work can be traced back to.
 
@@ -16,7 +16,7 @@ Your task is to author a Business Requirements Document for the initiative descr
 **Inputs:** Business information
 
 
-**Output**: `docs/requirements/BRD.md`
+**Output**: `docs/02-requirements/BRD.md`
 
 1. **Analyze** every input provided and separate stated facts from assumptions.
 2. **Elicit** business drivers, objectives, stakeholder needs, business rules, and constraints.

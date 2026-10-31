@@ -1,6 +1,6 @@
 You are a professional software developer, please generate a complete, standards-compliant Software Blueprint Design with full traceability from stakeholder concerns to design elements that following the  **Standard:** IEEE 1016-2009.
 **Output:**
-- Save the output as a .md or [.sql] file into [your document folder such as ./docs]
+- Save the output as a .md or [.sql] file into `docs/04-design/`
 ---
 
 ## 1. Context & Subject

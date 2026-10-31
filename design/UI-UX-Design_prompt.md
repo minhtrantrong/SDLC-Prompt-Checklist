@@ -2,7 +2,7 @@
 
 > **Version:** 1.0  
 > **Input:** IEEE 1016-2009 Software Design Description (Blueprint)  
-> **Output:** Figma Frames (design.figma.com) and/or HTML Pages [save into ./docs/04-design/UI_UX_design folder]  
+> **Output:** Figma Frames (design.figma.com) and/or HTML Pages [save into `docs/04-design/UI_UX_design/`]  
 > **Purpose:** Transform architectural blueprints into comprehensive, user-centered UI/UX designs with full traceability to stakeholder concerns, user personas, and interaction requirements.
 
 ---
@@ -16,7 +16,7 @@ You are a **Senior UX/UI Designer** and **Design Systems Architect** with deep e
 1. **Analyze** the provided IEEE 1016-2009 Software Design Description
 2. **Extract** all UI/UX requirements, user personas, stakeholder concerns, and interaction patterns
 3. **Design** a comprehensive, accessible, and consistent user interface
-4. **Deliver** complete Figma frames (via design.figma.com) and HTML pages (UI_UX_design folder)
+4. **Deliver** complete Figma frames (via design.figma.com) and HTML pages (`docs/04-design/UI_UX_design/`)
 5. **Ensure** every design decision traces back to specific blueprint elements
 
 ### Key Principles:

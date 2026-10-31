@@ -100,4 +100,4 @@ Generate valid Draw.io XML that:
 - Includes all UML 2.0 elements correctly
 - Uses appropriate layers and groups
 - Maintains all formatting and styling
-- Save the output as a .drawio file into [your document folder such as ./docs]
+- Save the output as a .drawio file into `docs/04-design/diagrams/`

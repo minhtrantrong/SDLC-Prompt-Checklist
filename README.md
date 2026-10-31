@@ -1,4 +1,4 @@
-# AI-SDLC-Docs
+# SDLC-Prompt-Checklist
 
 A lightweight repository of AI-assisted software development lifecycle (SDLC) prompts and standards-aligned checklist artifacts for architecture, design, database modeling, UX, and test planning.
 
@@ -17,21 +17,22 @@ The materials are intended to support teams working with AI tools to create stan
 
 ## Repository Contents
 
-Documents are organized by SDLC phase, in folders matching the phase numbers in [AI_SDLC-SOP.md](./AI_SDLC-SOP.md):
+Documents are organized by SDLC phase, in folders named after the phase. The phase numbers refer to the sections of [AI_SDLC-SOP.md](./AI_SDLC-SOP.md). Folder names in this repository are not numbered; generated project artifacts go to the numbered `docs/0X-<phase>/` folder of the project that consumes these prompts.
 
-| Folder | SDLC phase | Contents |
-|---|---|---|
-| [`requirements/`](./requirements) | Requirements and discovery (5.2) | Business requirements document template |
-| [`analysis/`](./analysis) | Analysis (5.3) | BRD and PRD prompts and the requirements checklist |
-| [`design/`](./design) | Design, modeling (5.4) | SAD, blueprint, UML diagram, API, database and UI/UX prompts with their checklists |
-| [`05-development/`](./05-development) | Development planning (5.5) | Software Development Plan prompt and ISO/IEC/IEEE 24748-5 checklist |
-| [`verification/`](./verification) | Verification and testing (5.7) | Test plan prompt and checklist |
+| Folder | SDLC phase | Artifact folder in the consuming project | Contents |
+|---|---|---|---|
+| [`requirements/`](./requirements) | Requirements and discovery (5.2) | `docs/02-requirements/` | Business requirements document template |
+| [`analysis/`](./analysis) | Analysis (5.3); BRD prompts serve 5.2 | `docs/02-requirements/`, `docs/03-analysis/` | BRD and PRD prompts and the requirements checklists |
+| [`design/`](./design) | Design, modeling (5.4) | `docs/04-design/` | SAD, blueprint, UML diagram, API, database and UI/UX prompts with their checklists |
+| [`development/`](./development) | Planning (5.5) | `docs/05-development/` | Software Development Plan prompt and ISO/IEC/IEEE 24748-5 checklist |
+| [`verification/`](./verification) | Verification and testing (5.7) | `docs/07-verification/` | Test plan and code review prompts and checklists |
+| [`agentic-sdlc-process.md`](./agentic-sdlc-process.md) | All phases | — | Phase-by-phase artifact flow for the whole process |
 
 ### Prompt Templates
 
 Prompt files for common SDLC activities, kept in the folder of the phase that uses them:
 
-- `requirements/` — the BRD template
+- `requirements/BRD-Template.md`, `requirements/BRD-Template.docx` — the BRD template
 - `analysis/BRD_Elicitation_Prompt_IEEE_standard.md`
 - `analysis/BRD_Prompt_IEEE_standard.md`
 - `analysis/PRD_prompt.md`, `analysis/PRD_Prompt_IEEE_standard.md`, `analysis/PRD_Prompt_with_template.md`
@@ -41,26 +42,27 @@ Prompt files for common SDLC activities, kept in the folder of the phase that us
 - `design/sequenceDiagram_prompt.md`, `design/activityDiagram_prompt.md`, `design/useCase_prompt.md`
 - `design/apiDesign_prompt.md`, `design/UI-UX-Design_prompt.md`
 - `design/databaseDesign_SQL_prompt.md`, `design/databaseDesign_NoSQL_prompt.md`, `design/databaseDesign_GraphrDB_prompt.md`, `design/databaseDesign_VectorDB_prompt.md`
-- `05-development/DevPlan_ISO_24748_5_Prompt.md`
+- `development/DevPlan_ISO_24748_5_Prompt.md`
 - `verification/testPlan_prompt.md`
 
 ### Checklist Artifacts
 
 Supporting checklist spreadsheets sit next to the prompts they validate:
 
-- `analysis/PRD_IEEE_29148_Checklist.xlsx`
+- `analysis/BRD_IEEE_29148_Checklist.xlsx`, `analysis/PRD_IEEE_29148_Checklist.xlsx`
 - `design/BluePrint_Design_IEEE_1016_2009_Checklist.xlsx`, `design/SAD_IEEE_1016_Checklist.xlsx`
 - `design/Class_Diagram_UML2.0_Checklist.xlsx`, `design/Component_Diagram_UML2.0_Checklist.xlsx`, `design/Deployment_Diagram_UML2.0_Checklist.xlsx`
 - `design/Sequence_Diagram_UML2.0_Checklist.xlsx`, `design/Activity_Diagram_UML2.0_Checklist.xlsx`, `design/UseCase_Document_UML2.0_Checklist.xlsx`
 - `design/API_Design_IEEE-1016-2009Checklist.xlsx`, `design/UI_UX_Design_IEEE-1016-2009_Checklist.xlsx`
 - `design/Database_Design_Checklist.xlsx`, `design/Polyglot_DB_Design_Checklist.xlsx`, `design/Checklist_Database Design Review.xlsx`
-- `05-development/DevPlan_ISO_24748_5_Checklist.xlsx`
-- `verification/Test_Plan_IEEE_829_Checklist.xlsx`
+- `development/DevPlan_ISO_24748_5_Checklist.xlsx`
+- `verification/Test_Plan_IEEE_829_Checklist.xlsx`, `verification/Code_Review_IEEE_1028_Checklist.xlsx`
 
 ### Standards:
 
-- IEEE 1016-2009, IEEE 829, IEEE 29148
-- ISO/IEC/IEEE 24748-5:2017
+- IEEE 1016-2009, IEEE 829, IEEE 1028, IEEE 29148, IEEE 29119
+- ISO/IEC/IEEE 24748-5:2017, ISO/IEC/IEEE 42010
+- ISO/IEC 25010
 - UML 2.0
 
 ## Typical Usage
@@ -68,7 +70,7 @@ Supporting checklist spreadsheets sit next to the prompts they validate:
 1. Choose the prompt for the phase you are working in, from that phase's folder.
 2. Fill in the placeholder system or project details in the prompt.
 3. Use the prompt with your preferred AI assistant or generation workflow.
-4. Save the generated output into the target project's `docs/<phase>` folder as defined in [AI_SDLC-SOP.md](./AI_SDLC-SOP.md).
+4. Save the generated output into the target project's numbered `docs/0X-<phase>/` folder, as defined in [AI_SDLC-SOP.md](./AI_SDLC-SOP.md).
 5. Use the spreadsheet checklists to validate completeness and standards alignment.
 
 ## Suggested Workflow

@@ -90,4 +90,4 @@ Create a comprehensive Graph Database Design for [SYSTEM NAME] including complet
 ---
 
 **Output:**
-- Save the output as a .md file into [your document folder such as ./docs]
+- Save the output as a .md file into `docs/04-design/`

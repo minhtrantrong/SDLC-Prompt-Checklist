@@ -98,4 +98,4 @@ Create a comprehensive Vector Database Design for [SYSTEM NAME] including comple
 - **Azure Cognitive Search**: Microsoft managed, AI enrichment, rich metadata
 
 **Output:**
-- Save the output as a .md file into [your document folder such as ./docs]
+- Save the output as a .md file into `docs/04-design/`

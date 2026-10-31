@@ -32,4 +32,4 @@ Functional Areas:
 - Include all <<include>> and <<extend>> stereotypes where applicable
 
 **TECHNICAL FORMAT:**
-Generate the output as a .drawio file and save it into [your document folder such as ./docs]
+Generate the output as a .drawio file and save it into `docs/04-design/diagrams/`
