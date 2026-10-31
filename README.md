@@ -21,7 +21,7 @@ Documents are organized by SDLC phase, in folders named after the phase. The pha
 
 | Folder | SDLC phase | Artifact folder in the consuming project | Contents |
 |---|---|---|---|
-| [`requirements/`](./requirements) | Requirements and discovery (5.2) | `docs/02-requirements/` | Business requirements document template |
+| [`requirements/`](./requirements) | Intake and requirements (5.1–5.2) | `docs/01-intake/`, `docs/02-requirements/` | Intake prompt and business requirements document template |
 | [`analysis/`](./analysis) | Analysis (5.3); BRD prompts serve 5.2 | `docs/02-requirements/`, `docs/03-analysis/` | BRD and PRD prompts and the requirements checklists |
 | [`design/`](./design) | Design, modeling (5.4) | `docs/04-design/` | SAD, blueprint, UML diagram, API, database and UI/UX prompts with their checklists |
 | [`development/`](./development) | Planning (5.5) | `docs/05-development/` | Software Development Plan and task breakdown (WBS) prompts, plus the ISO/IEC/IEEE 24748-5 checklist |
@@ -33,6 +33,7 @@ Documents are organized by SDLC phase, in folders named after the phase. The pha
 
 Prompt files for common SDLC activities, kept in the folder of the phase that uses them:
 
+- `requirements/Intake_Intent_Prompt.md` — intake record (`intent.md`, sources, glossary, stakeholders, risk tier)
 - `requirements/BRD-Template.md`, `requirements/BRD-Template.docx` — the BRD template
 - `analysis/BRD_Elicitation_Prompt_IEEE_standard.md`
 - `analysis/BRD_Prompt_IEEE_standard.md`
@@ -43,9 +44,19 @@ Prompt files for common SDLC activities, kept in the folder of the phase that us
 - `design/sequenceDiagram_prompt.md`, `design/activityDiagram_prompt.md`, `design/useCase_prompt.md`
 - `design/apiDesign_prompt.md`, `design/UI-UX-Design_prompt.md`
 - `design/databaseDesign_SQL_prompt.md`, `design/databaseDesign_NoSQL_prompt.md`, `design/databaseDesign_GraphrDB_prompt.md`, `design/databaseDesign_VectorDB_prompt.md`
+- `design/Design_Audit_Prompt.md`
 - `development/DevPlan_ISO_24748_5_Prompt.md`
 - `development/TaskBreakdown_ISO_21511_Prompt.md`
-- `verification/testPlan_prompt.md`
+- `development/Implementation_Task_Prompt.md`
+- `verification/TestPlan_IEEE 829-2008_prompt.md`
+- `verification/TestCase_RTM_IEEE_829_Prompt.md`
+- `verification/TestReport_IEEE_829_Prompt.md`
+- `verification/Code_Review_IEEE_1028_Prompt.md`
+
+Every prompt template carries the same six sections — role, inputs, task, rules, output contract and
+self-check — so it can be invoked with a single reference (`@<path>`). Fill its `Project parameters` and attach
+its inputs before running it, and adapt it to your organization's standard first, as described in
+[step-by-step-guidance.md](./step-by-step-guidance.md) §A2.
 
 ### Checklist Artifacts
 
@@ -70,8 +81,9 @@ Supporting checklist spreadsheets sit next to the prompts they validate:
 ## Typical Usage
 
 1. Choose the prompt for the phase you are working in, from that phase's folder.
-2. Fill in the placeholder system or project details in the prompt.
-3. Use the prompt with your preferred AI assistant or generation workflow.
+2. Fill in `## 2.2 Project parameters` and attach the inputs listed in `## 2.1`.
+3. Reference the prompt file itself (`@<path>`) in your preferred AI assistant or generation workflow — the file
+   already contains the input, task, rules and output contract.
 4. Save the generated output into the target project's numbered `docs/0X-<phase>/` folder, as defined in [AI_SDLC-SOP.md](./AI_SDLC-SOP.md).
 5. Use the spreadsheet checklists to validate completeness and standards alignment.
 

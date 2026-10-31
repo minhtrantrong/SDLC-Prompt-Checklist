@@ -28,7 +28,7 @@ placeholder you fill in.
 A1. Everything here is a template · A2. Adapt prompts and checklists first · A3. How the kit fits together ·
 A4. The loop every step follows · A5. Artifact layout and naming · A6. Gates, evidence and approvals ·
 A7. How to run a prompt · A8. How to score a checklist · A9. Identifier scheme · A10. Roles ·
-A11. Phases without a dedicated prompt or checklist
+A11. Template coverage by phase
 
 **Part B — Phase-by-phase steps**
 Phase 1 Intake · Phase 2 Requirements · Phase 3 Analysis · Phase 4 Design · Phase 5 Planning ·
@@ -49,6 +49,8 @@ E. Common failure modes
 - Paths without `docs/` are files in this kit repository.
 - "Gate" means the conditions that must hold before the phase is called complete (SOP §5, §5.12).
 - "Owner" always means a named human, never an agent.
+- `@<path-to-folder>/<phase-folder>/<template>.md` is the literal invocation of a prompt template: the file
+  already holds the input, task and output contract, so nothing else is typed into the chat (§A7).
 
 ---
 
@@ -78,6 +80,9 @@ Consequences that apply to every step in Part B:
    exists to close the gap, not to prove the first pass was perfect.
 5. **Do not redistribute project-filled versions.** Once a template is filled with real project data or
    organizational rules, it is a project document, not a kit template.
+6. **Keep the template contract intact.** Every prompt in this kit carries the same six sections — role,
+   inputs, task, rules, output, self-check (§A7). Adapt the content of those sections; do not delete a section,
+   or the run depends on chat instructions again.
 
 ## A2. Adapt prompts and checklists to your organization and project first
 
@@ -117,6 +122,9 @@ Consequences that apply to every step in Part B:
    cross-references between prompt sections and checklist rows are the most common defect.
 5. Re-review adaptations on a fixed cadence and whenever the standard, the tooling or the org template
    changes.
+6. Keep the six-section contract when you adapt a template (§A7); put organization rules into
+   `## 4. Rules and constraints`, parameters into `## 2.2`, and output requirements into `## 5`. A template
+   whose sections were merged or deleted cannot be invoked with a single reference any more.
 
 ## A3. How the kit fits together
 
@@ -187,52 +195,51 @@ A phase is complete only when all five rules hold:
 A baseline is a commit plus a tag (for example `requirements-v1`, `design-v1` or `release-v1`) whose tag
 message or attached record names the checklist result and the approver.
 
-## A7. How to run a prompt
+## A7. How to run a prompt template
 
-Every prompt in `analysis/`, `design/`, `development/` and `verification/` follows the same contract:
-role → inputs → task → rules → output contract → self-check. When you call one, keep that shape.
-
-1. **Attach files explicitly** (`@path/to/file` where your tool supports it, otherwise paste the content
-   or give the path) — never say "my document".
-2. **Fill every placeholder.** Prompts contain `[...]`, `[Insert ...]`, `[SYSTEM NAME]`, YAML parameter
-   blocks and similar markers. An unfilled placeholder silently becomes a fabrication.
-3. **Name the output path, structure and language.** Without a path the agent answers in chat, and a chat
-   answer is not an artifact.
-4. **Forbid invention.** No invented sources, people, dates, estimates, paths, approvals or standard
-   clauses; unknowns become `OQ-xxx` with an owner.
-5. **Demand a self-audit** against the adapted checklist, and a list of Fail/Partial rows.
-6. **Set a stop condition:** ask the agent to stop and list open questions rather than guess.
-7. **Record the prompt version** used (path + version) in the artifact front matter, so the artifact can
-   be reproduced.
-
-Reusable skeleton when the kit has no prompt for a step:
+Every prompt in this kit is self-contained: **input, task and output are inside the file, not in your chat
+message.** Calling one is a single reference: the absolute or workspace-relative location of the kit, followed by
+the template's own phase folder and file name.
 
 ```text
-# Role
-You are a <role> working to <standard / org template>.
-
-# Inputs (read-only)
-- <baselined artifact path>
-- <baselined artifact path>
-- <org standard, template or checklist path>
-
-# Task
-1. <3–5 imperative steps>
-2. ...
-
-# Rules
-- Cite the source of every material fact as [Source: <path> §<section>] or by ID.
-- Do not invent sources, IDs, dates, names, estimates, file paths or approvals.
-- Do not modify the input artifacts.
-- Mark anything unresolved as OQ-xxx with an owner.
-
-# Output
-- Write <path> in <language>, keeping the structure of <template> and reusing existing IDs.
-
-# Self-check and stop
-- Score the result against <checklist path>; list every Fail/Partial row with evidence.
-- If an input is missing or contradictory, stop and ask instead of guessing.
+@<path-to-folder>/analysis/BRD_Prompt_IEEE_standard.md
 ```
+
+`<path-to-folder>` is the folder that holds this kit (for example `~/work/SDLC-Prompt-Checklist`); everything
+after it is the template path as written in this guide.
+
+That is the whole invocation. What the template carries, and what you must do before sending it:
+
+| Section in the template | Contains | Your job before running it |
+|---|---|---|
+| Header block | Version, standard, SOP phase, role, companion checklist, output path | Confirm the phase and the output path match this project |
+| `1. Role and mission` | Who the agent is and what it must not do | Adjust the role only if your organization defines it differently |
+| `2. Inputs` | `2.1` required inputs with IDs, `2.2` project parameters, `2.3` input handling rules | **Fill every parameter in `2.2`** and attach or path the files in `2.1` |
+| `3. Task` | The numbered steps the agent must execute | Do not add task instructions in the chat; change the template if the task is wrong |
+| `4. Rules and constraints` | Quality bar, forbidden actions, standards to apply | Add organization rules here, not as chat remarks |
+| `5. Output contract` | Exact path, language, structure, document control, closing sections | Adjust the path only if the project layout differs from SOP §5 |
+| `6. Self-check and stop conditions` | The checklist to score against, the gate items, and when to stop and ask | Point it at your adapted checklist |
+| `7. Detailed specification` | The long-form structure, question bank, templates or notation rules | Adapt it to your standard; it is where most adaptation happens |
+
+Rules that hold for every template:
+
+1. **One reference, no restatement.** Send `@<path-to-folder>/<phase-folder>/<template>.md`;
+   do not repeat the task in the chat. If the task is wrong, fix the template — otherwise the next
+   run diverges from this one.
+2. **No unfilled placeholder.** `<...>`, `[...]`, `[Insert ...]`, `[SYSTEM NAME]` and the `2.2` YAML block are
+   inputs, not decoration. An unfilled placeholder silently becomes a fabrication.
+3. **Attachment is explicit.** Reference real files by path; never say "my document".
+4. **The output path is part of the prompt.** Without it the agent answers in chat, and a chat answer is not
+   an artifact.
+5. **The self-check is part of the prompt.** A run that does not report the checklist score is incomplete.
+6. **Record the prompt version** — path plus version — in the artifact's document control, so the artifact can
+   be reproduced.
+7. **Adapt the template, not the conversation** (A2). A chat-level correction is invisible to the next run,
+   the next project and the next reviewer.
+
+When a step has no template yet, write one with the same six sections rather than improvising a chat prompt:
+role, inputs, task, rules, output contract, self-check — plus the header block that names the checklist and the
+output path. Then adapt it with A2, version it, and add it to [Appendix A](#appendix-a--kit-document-map).
 
 ## A8. How to score a checklist
 
@@ -297,22 +304,26 @@ Generic roles from SOP §4; map each to a named person or group during A2.
 One person may hold several roles in a small team, but the author never waives a mandatory independent
 review or approval.
 
-## A11. Phases without a dedicated prompt or checklist
+## A11. Template coverage by phase
 
-Only part of the lifecycle is covered by ready-made prompts. Use this mapping and close the gap
-deliberately:
+Each phase below names the template it runs and the gap it closes. Use the mapping so no step is improvised
+in chat:
 
-| Phase | Coverage in this kit | How to proceed |
+| Phase | Templates in this kit | How to proceed |
 |---|---|---|
-| 1 Intake | No prompt or checklist; structure defined in [agentic-sdlc-process.md](./agentic-sdlc-process.md) §2 and SOP §5.1 | Use the A7 skeleton with the 7 intent sections and the SOP risk-tier table |
-| 4 Design (cross-artifact audit) | Per-artifact prompts and checklists exist; no overall audit prompt | Use the A7 skeleton in a read-only session over all design artifacts plus the SAD and per-view checklists |
-| 6 Implementation | No prompt; task cards come from phase 5 | Use the task card + repository instructions + the A7 skeleton; SOP §5.6 lists the controls |
-| 7 Verification (test cases, RTM, report) | Test **plan** prompt and IEEE 829 checklist exist | Derive cases, matrix and report with the A7 skeleton anchored on the same IEEE 829 checklist |
-| 8 Review | IEEE 1028 checklist exists; no review prompt | Use the A7 skeleton as a read-only reviewer, one finding per line |
-| 9–11 Release, Operations, Decommissioning | No prompts or checklists | Follow SOP §5.9–§5.11 and record the evidence the SOP asks for |
+| 1 Intake | `requirements/Intake_Intent_Prompt.md`; no checklist | Use the template; gate on the SOP §5.1 exit criteria |
+| 4 Design (cross-artifact audit) | `design/Design_Audit_Prompt.md` plus the per-artifact checklists | Use the template; it runs the ten pairwise checks and scores each artifact |
+| 6 Implementation | `development/Implementation_Task_Prompt.md`; review checklist | Use the template with the task card; the IEEE 1028 checklist is read before coding |
+| 7 Verification | `verification/TestPlan_IEEE 829-2008_prompt.md`, `TestCase_RTM_IEEE_829_Prompt.md`, `TestReport_IEEE_829_Prompt.md`; IEEE 829 checklist | Use the three templates in order: plan → cases and matrix → report |
+| 8 Review | `verification/Code_Review_IEEE_1028_Prompt.md`; IEEE 1028 checklist | Use the template as a read-only reviewer; a human approves |
+| 9–11 Release, Operations, Decommissioning | No templates | Follow SOP §5.9–§5.11 and record the evidence the SOP asks for; write a project template if the work repeats |
 
-If a phase keeps falling back to the skeleton, that is a signal to write a project prompt, adapt it with
-A2, version it, and share it back into the kit.
+Every phase from 1 to 8 therefore has a template with the same six sections. Phases 9–11 are governed by the
+organization's release, incident and decommissioning processes — do not invent a prompt where a controlled
+process already exists.
+
+If a phase keeps falling back to a chat prompt, that is a signal to write a project template with the A7
+structure, adapt it with A2, version it, and share it back into the kit.
 
 ---
 
@@ -334,35 +345,29 @@ tier, so later phases have an unambiguous starting point (SOP §5.1).
 |---|---|---|
 | Guidance | [AI_SDLC-SOP.md](./AI_SDLC-SOP.md) §5.1 | Goal, risk tiers and controls, exit criteria |
 | Guidance | [agentic-sdlc-process.md](./agentic-sdlc-process.md) §2 | Four intake steps and the 7 intent sections |
-| Prompt | none in this kit | Use the A7 skeleton |
-| Checklist | none in this kit | Use the SOP §5.1 exit criteria as the gate |
+| Prompt | [requirements/Intake_Intent_Prompt.md](./requirements/Intake_Intent_Prompt.md) | Drafts `intent.md`, `sources.md`, `glossary.md`, `stakeholders.md` and proposes the risk tier |
+| Checklist | None in this kit | Gate on the SOP §5.1 exit criteria; the template's §6 encodes them as self-check items |
 
 **Steps**
 
 | # | Step | Produce |
 |---|---|---|
 | 1 | Collect every source into one list; give each its own `SRC-xxx` and a one-line reliability note | `docs/01-intake/sources.md` |
-| 2 | Draft `intent.md` with exactly seven sections: Problem · Proposed outcome · Affected users · Constraints · Success measures · Out of scope · Open questions | `docs/01-intake/intent.md` |
+| 2 | Draft `intent.md` with exactly seven sections: Problem · Proposed outcome · Affected users · Constraints · Success measures · Out of scope · Open questions — or run the intake template to draft it | `docs/01-intake/intent.md` |
 | 3 | Write `glossary.md` (term, definition, synonyms to avoid) and `stakeholders.md` (person, role, concern, influence) | `docs/01-intake/glossary.md`, `stakeholders.md` |
 | 4 | Set success measures with baseline, target and measurement method; number open questions `OQ-xxx` with the person who answers | `intent.md` |
 | 5 | Assign owner, acceptance criteria and risk tier (Low/Medium/High per SOP §5.1), list required reviewers and data/tool constraints | work item |
 | 6 | Requester confirms the problem and outcome statement; record the confirmation and hand off to requirements | work item + handoff record |
 
-**Prompt pattern**
+**Run**
 
 ```text
-Read the request and sources in docs/01-intake/sources.md.
-Write docs/01-intake/intent.md with exactly these seven sections:
-Problem | Proposed outcome | Affected users | Constraints |
-Success measures | Out of scope | Open questions.
-
-Rules:
-- Cite SRC-xxx for every assertion; unsourced claims are marked [Unverified].
-- Each success measure states baseline, target and how it is measured.
-- Number open questions OQ-xxx and name who answers each one.
-- Propose a risk tier (Low | Medium | High) with the reason, per <org risk-tier table>.
-- Do not propose a technical solution, a technology choice or an architecture.
+@<path-to-folder>/requirements/Intake_Intent_Prompt.md
 ```
+
+The template carries the seven `intent.md` sections, the source registry, the glossary and stakeholder
+tables, and the risk-tier proposal; fill §2.2 with the request, the accountable owner and your organization's
+risk-tier table before sending it.
 
 **Outputs:** `docs/01-intake/` (or the equivalent work-item fields), plus the risk tier and approver list.
 
@@ -399,29 +404,22 @@ to IEEE 29148, then auditing it before baseline (SOP §5.2).
 
 | # | Step | Produce |
 |---|---|---|
-| 1 | Fill the prompt's input sections (business foundation, source evidence, house template) and finish the A2 adaptation | adapted prompt |
+| 1 | Fill `## 2.2 Project parameters` (business foundation, sponsor, source evidence, house template) and finish the A2 adaptation | adapted prompt |
 | 2 | Run the elicitation session against the real stakeholders: at most three questions per turn, priority order goal → scope → rules, no answering on the stakeholder's behalf, a session status after each turn | `docs/02-requirements/interviews/SRC-xxx.md` |
 | 3 | Author the BRD with the authoring prompt; keep the elicitation prompt for the session and the authoring prompt for the document when both are needed | `docs/02-requirements/BRD.md` |
 | 4 | Check every business requirement has an acceptance criterion and a verification method; collect `OQ-xxx` at the end | `BRD.md` |
 | 5 | Audit in a clean session or auditor sub-agent against the checklist: `Pass`/`Partial`/`Fail`/`N/A`, evidence per row, no edits to the BRD | `docs/02-requirements/brd-audit.md` |
 | 6 | Fix by risk, re-audit (max three rounds), then request PM/PO approval and baseline | git tag `requirements-v1` |
 
-**Prompt pattern**
+**Run**
 
 ```text
-@analysis/BRD_Prompt_IEEE_standard.md
-
-## Inputs (read-only)
-- docs/01-intake/intent.md, stakeholders.md, glossary.md
-- docs/02-requirements/interviews/SRC-*.md
-- <house template, if the organization mandates one>
-
-## Task
-1. Keep the prompt's section structure and quality rules; adapt wording to <org conventions>.
-2. Fill every placeholder. Where a fact has no source, write OQ-xxx instead of inventing it.
-3. Give each BR-xxx an acceptance criterion and a verification method, and trace it to BO/SN.
-4. Write the result to docs/02-requirements/BRD.md and list all OQ-xxx at the end.
+@<path-to-folder>/analysis/BRD_Elicitation_Prompt_IEEE_standard.md
+@<path-to-folder>/analysis/BRD_Prompt_IEEE_standard.md
 ```
+
+Run the elicitation template to conduct the session and record `interviews/SRC-*.md`; run the authoring
+template when the BRD needs the full document structure. Both write the BRD through their §5 output contract.
 
 **Outputs:** `docs/02-requirements/BRD.md`, `interviews/SRC-xxx.md`, `brd-audit.md`, baseline tag.
 
@@ -466,29 +464,15 @@ stories with acceptance criteria, and baseline them (SOP §5.3).
 | 6 | Build the two-way matrix BO → BR → FR → US and flag every broken branch as `[ORPHAN]` | `docs/03-analysis/traceability.md` |
 | 7 | Fix, re-audit, then request PM/PO approval (plus tech lead when architecture, data or NFRs are affected) and baseline | git tag `analysis-v1` |
 
-**Prompt pattern**
+**Run**
 
 ```text
-@analysis/PRD_Prompt_IEEE_standard.md   # or PRD_prompt.md / PRD_Prompt_with_template.md
-
-## Inputs (read-only)
-- docs/02-requirements/BRD.md (baselined)
-- docs/02-requirements/interviews/SRC-*.md
-- <org template, if required>
-
-## Task
-1. Write docs/03-analysis/PRD.md following the prompt's structure.
-2. Every FR/NFR: ID, source BR-xxx, priority, acceptance criteria, verification method.
-3. NFRs state metric, threshold and measurement method; no qualitative adjectives.
-4. Anything you cannot trace upstream is marked [ORPHAN] and raised as OQ-xxx.
-
-Then write docs/03-analysis/USER_STORIES.md:
-- US-xxx in "As a <role>, I want <capability>, so that <benefit>".
-- At most 5 Given-When-Then acceptance criteria per story, plus the FR-xxx IDs covered.
-- A story without acceptance criteria or FR-xxx links is not acceptable output.
-
-Finally score both documents against <adapted PRD checklist> and list Fail/Partial rows.
+@<path-to-folder>/analysis/PRD_prompt.md
 ```
+
+Use `@<path-to-folder>/analysis/PRD_Prompt_IEEE_standard.md` for the shorter five-part PRD, or
+`@<path-to-folder>/analysis/PRD_Prompt_with_template.md` when a house template is mandated. All
+three carry the same inputs, task, rules and IEEE 29148 self-check.
 
 **Outputs:** `PRD.md` or `SRS.md`, `USER_STORIES.md`, `traceability.md`, `prd-audit.md`, baseline tag.
 
@@ -532,12 +516,13 @@ constraints (approved stack, hosting, security, regulatory).
 | Checklist | [design/Database_Design_Checklist.xlsx](./design/Database_Design_Checklist.xlsx), [design/Polyglot_DB_Design_Checklist.xlsx](./design/Polyglot_DB_Design_Checklist.xlsx), [design/Checklist_Database Design Review.xlsx](./design/Checklist_Database%20Design%20Review.xlsx) | Audit the data design |
 | Prompt | [design/UI-UX-Design_prompt.md](./design/UI-UX-Design_prompt.md) | Personas, flows, frames/HTML from the blueprint |
 | Checklist | [design/UI_UX_Design_IEEE-1016-2009_Checklist.xlsx](./design/UI_UX_Design_IEEE-1016-2009_Checklist.xlsx) | Audit the UI/UX design |
+| Prompt | [design/Design_Audit_Prompt.md](./design/Design_Audit_Prompt.md) | Cross-artifact audit: SAD ↔ blueprint ↔ diagrams ↔ API ↔ data ↔ UI/UX |
 
 **Steps**
 
 | # | Step | Produce |
 |---|---|---|
-| 1 | Pick the SAD prompt variant, fill the system foundation and constraints, and keep the output in the organization's SAD template | `docs/04-design/SAD.md` |
+| 1 | Pick the SAD template variant, fill `## 2.2` (system foundation, approved stack, constraints), and keep the output in the organization's SAD template | `docs/04-design/SAD.md` |
 | 2 | Cover the five views — Logical, Process, Development, Physical, Scenarios — and record which requirement IDs each view satisfies | `SAD.md` |
 | 3 | Record at least the decisions that are hard to reverse as ADRs: context, options, decision, consequences, status | `docs/04-design/ADR-xxx.md` |
 | 4 | Draw one canonical diagram per view with the matching diagram prompt; save the `.drawio` source and export images only for embedding | `docs/04-design/diagrams/*.drawio` |
@@ -549,28 +534,16 @@ constraints (approved stack, hosting, security, regulatory).
 | 10 | Run a cross-artifact audit in a read-only session: SAD ↔ blueprint ↔ diagrams ↔ API ↔ data ↔ UI/UX. Orphan elements, missing flows, contract drift and ownerless NFRs are blocking | `docs/04-design/design-audit.md` |
 | 11 | Fix discrepancies through ADRs (never by silent edit), then obtain tech lead/architect approval, security review where sensitive data or external interfaces are involved, and PO review where user-visible behaviour changes | git tag `design-v1` |
 
-**Prompt pattern**
+**Run**
 
 ```text
-@design/SAD_Prompt_IEEE_standard.md
-
-## Inputs (read-only)
-- docs/02-requirements/BRD.md
-- docs/03-analysis/PRD.md, USER_STORIES.md, traceability.md
-- <architecture constraints: approved stack, hosting, security, regulatory>
-
-## Output
-- docs/04-design/SAD.md
-
-## Rules
-- Cover the five 4+1 views (design/SAD_prompt.md carries the full IEEE 1016 view set);
-  one canonical .drawio diagram per view.
-- Attach FR-xxx/NFR-xxx to each component and to each quality-attribute scenario.
-- Quality-attribute scenarios use the six-part form with a measured response.
-- Record at least the hard-to-reverse decisions as ADR-xxx with alternatives and consequences.
-- Differences from the PRD go in Assumptions; unresolved items become OQ-xxx with an owner.
-- Score the result against <adapted SAD checklist> and list Fail/Partial rows.
+@<path-to-folder>/design/SAD_Prompt_IEEE_standard.md
 ```
+
+Every other design artifact has its own template with the same contract: `design/SAD_prompt.md` and
+`design/SAD_Prompt_with_template_.md` for the SAD variants, `design/bluePrint_design_prompt.md`, the six UML
+diagram prompts, `design/apiDesign_prompt.md`, the four `design/databaseDesign_*_prompt.md` prompts,
+`design/UI-UX-Design_prompt.md`, and `design/Design_Audit_Prompt.md` for step 10.
 
 **Outputs:** `SAD.md`, `ADR-*.md`, `blueprint.md`, `diagrams/*.drawio`, `openapi.yaml`, `data/model.md`,
 `UI_UX_design/`, `design-audit.md`, baseline tag.
@@ -610,7 +583,7 @@ to — SDP, WBS and task cards small enough for a single agent session (SOP §5.
 
 | # | Step | Produce |
 |---|---|---|
-| 1 | Fill the project-parameter block in both prompts (project name/ID, document IDs, owner, approvers, language, delivery model, task-size limit, agent iteration limit, regulatory context) — this is the A2 adaptation for this phase | adapted prompts |
+| 1 | Fill `## 2.2` in both templates (project name/ID, document IDs, owner, approvers, language, delivery model, task-size limit, agent iteration limit, regulatory context) — this is the A2 adaptation for this phase | adapted prompts |
 | 2 | Author the Software Development Plan with the DevPlan prompt; keep its output contract and front matter | `docs/05-development/Software_Development_Plan.md` |
 | 3 | Derive the deliverable-oriented WBS, WBS dictionary, dependency model and task cards with the TaskBreakdown prompt | `docs/05-development/WBS.md`, `docs/05-development/tasks/<task-id>.md` |
 | 4 | Write each task card with: objective, inputs, files to touch, acceptance criteria, verification method, and explicit "do not do" scope | task cards |
@@ -620,30 +593,15 @@ to — SDP, WBS and task cards small enough for a single agent session (SOP §5.
 | 8 | Audit the plan against the ISO 24748-5 checklist; verify every task card has the mandatory fields | plan audit notes |
 | 9 | Review: PM/PO approve scope and sequencing, tech lead/architect approve feasibility and dependencies; baseline | git tag `plan-v1` |
 
-**Prompt pattern**
+**Run**
 
 ```text
-@development/TaskBreakdown_ISO_21511_Prompt.md
-
-## Inputs (read-only)
-- development/DevPlan_ISO_24748_5_Prompt.md output: docs/05-development/Software_Development_Plan.md
-- docs/04-design/SAD.md, ADR-*.md
-- docs/03-analysis/USER_STORIES.md, PRD.md
-
-## Project parameters
-- Fill section 2.4 of the prompt: <project, owners, language, delivery model,
-  task size limit, agent iteration limit, regulatory context>
-
-## Output
-- docs/05-development/WBS.md and docs/05-development/tasks/<task-id>.md
-
-## Rules
-- Every task: acceptance criteria, files to touch, verification method, US/FR links, "do not do".
-- Respect the task size and agent iteration limits; split larger work.
-- A path must exist in the repository or be labelled `planned` with the design source authorizing it.
-- TBD is allowed only with an owner and a due date.
-- Score against <adapted DevPlan checklist> and list Fail/Partial rows.
+@<path-to-folder>/development/DevPlan_ISO_24748_5_Prompt.md
+@<path-to-folder>/development/TaskBreakdown_ISO_21511_Prompt.md
 ```
+
+The first writes the plan; the second decomposes it into the WBS and task cards. Both take their parameter
+block from §2.2, so the project IDs, owners, language, size limits and regulatory context are set once in each.
 
 **Outputs:** `Software_Development_Plan.md`, `WBS.md`, `tasks/<task-id>.md`, baseline tag.
 
@@ -673,7 +631,7 @@ existing tests, related ADRs.
 | Kind | Document | Use |
 |---|---|---|
 | Guidance | [AI_SDLC-SOP.md](./AI_SDLC-SOP.md) §5.6 and §3 (operating principles) | Controls for agent-assisted edits |
-| Prompt | none in this kit — use the task card + the A7 skeleton | Scope, acceptance criteria, verification method already exist in the card |
+| Prompt | [development/Implementation_Task_Prompt.md](./development/Implementation_Task_Prompt.md) | Binds the run to one task card: allowed files, checks, iteration limit, stop rules |
 | Checklist | [verification/Code_Review_IEEE_1028_Checklist.xlsx](./verification/Code_Review_IEEE_1028_Checklist.xlsx) | Used at phase 8; read it before coding so the change is reviewable |
 
 **Steps**
@@ -689,24 +647,14 @@ existing tests, related ADRs.
 | 7 | Commit in small, conventional commits linked to the task and work item; state the deviation from the approved design if any | commits |
 | 8 | Inspect the complete diff yourself, then hand the change to verification with known gaps and unverified behaviour listed | handoff record |
 
-**Prompt pattern**
+**Run**
 
 ```text
-Task: docs/05-development/tasks/<task-id>.md
-Branch: <branch>
-
-Before editing: read <repository instructions>, the task card and the related tests;
-summarize the plan in five lines and wait for my approval.
-While working:
-- change only the files listed under "files to touch"
-- do not change API/schema contracts or design decisions
-- do not edit or weaken tests to make them pass
-- do not add dependencies without asking
-- stop if the task requires a design change; report it instead
-After working: run <the repository's verification commands>, paste the real output,
-list the diff, update traceability.md, and state what you could not verify.
-Never report "done" while a check is failing.
+@<path-to-folder>/development/Implementation_Task_Prompt.md
 ```
+
+The template binds the run to one task card: it reads `FILES_ALLOWED`, the check commands and the iteration
+limit from §2.2, refuses to weaken tests, and stops rather than guessing when the task needs a design change.
 
 **Outputs:** source and test changes on the approved branch, updated traceability, PR linked to the work
 item, handoff record.
@@ -737,7 +685,8 @@ and does not regress existing behaviour (SOP §5.7).
 |---|---|---|
 | Prompt | [verification/TestPlan_IEEE 829-2008_prompt.md](./verification/TestPlan_IEEE%20829-2008_prompt.md) | IEEE 829 test plan from requirements, design, UI, API and stories |
 | Checklist | [verification/Test_Plan_IEEE_829_Checklist.xlsx](./verification/Test_Plan_IEEE_829_Checklist.xlsx) | Audit the test plan, and anchor cases and report sections |
-| Prompt | none in this kit for test cases, RTM and test summary report | Use the A7 skeleton with the same IEEE 829 checklist |
+| Prompt | [verification/TestCase_RTM_IEEE_829_Prompt.md](./verification/TestCase_RTM_IEEE_829_Prompt.md) | Derives test cases from acceptance criteria and builds the two-way RTM |
+| Prompt | [verification/TestReport_IEEE_829_Prompt.md](./verification/TestReport_IEEE_829_Prompt.md) | Writes the IEEE 829 test summary report and the GO/NO-GO recommendation from recorded evidence |
 
 **Steps**
 
@@ -746,36 +695,25 @@ and does not regress existing behaviour (SOP §5.7).
 | 1 | Gather all inputs — requirements, stories, design, contracts, plan — not only the code | input list |
 | 2 | Author the test plan with the prompt: scope, items, features to test, approach, environment, data, entry/exit criteria, risks | `docs/07-verification/TEST_PLAN.md` |
 | 3 | Audit the plan against the IEEE 829 checklist before executing anything | plan audit notes |
-| 4 | Derive test cases from acceptance criteria, not from the implementation: `TC-xxx` with preconditions, steps, concrete data, expected result and how it is proven | `docs/07-verification/TEST_CASES.md` |
+| 4 | Derive test cases from acceptance criteria, not from the implementation, using the test-case template: `TC-xxx` with preconditions, steps, concrete data, expected result and how it is proven | `docs/07-verification/TEST_CASES.md` |
 | 5 | Ensure every acceptance criterion has at least one case, and that P0 paths also get boundary, negative and permission cases | `TEST_CASES.md` |
 | 6 | Build the two-way matrix AC → TC → result → evidence path; an acceptance criterion without a case is a blocking gap, recorded as `GAP` not left blank | `docs/07-verification/RTM.md` |
 | 7 | Pin the commit, environment and run-id; execute; store logs, screenshots, responses and query results per run | `docs/07-verification/evidence/<run-id>/` |
 | 8 | Triage failures: minimal reproduction, log, suspected cause, defect `DEF-xxx`. Do not fix source or tests mid-run, do not delete or silence failing tests | defect list, updated RTM |
-| 9 | Write the test summary report from the RTM and evidence: summary · scope and environment · variances · coverage and what was not tested · results by test level · defects and risks · GO/NO-GO with approvals | `docs/07-verification/TEST_REPORT.md` |
+| 9 | Write the test summary report from the RTM and evidence with the report template: summary · scope and environment · variances · coverage and what was not tested · results by test level · defects and risks · GO/NO-GO with approvals | `docs/07-verification/TEST_REPORT.md` |
 | 10 | Have the verification owner and QA reviewer confirm the evidence covers the acceptance criteria and that limitations are disclosed | approval |
 
-**Prompt pattern**
+**Run**
 
 ```text
-# Attach verification/TestPlan_IEEE 829-2008_prompt.md
-# (the file name contains a space, so attach it rather than typing an @-reference)
-
-## Inputs (read-only)
-- docs/03-analysis/PRD.md, USER_STORIES.md
-- docs/04-design/SAD.md, openapi.yaml, data/model.md
-- docs/05-development/Software_Development_Plan.md
-
-## Output
-- docs/07-verification/TEST_PLAN.md
-
-## Rules
-- Every acceptance criterion maps to at least one test case; every NFR to a measurement and threshold.
-- State environment, test data, entry/exit criteria and risks.
-- Each case: ID, objective, preconditions, steps, data, expected result, evidence method.
-- Do not design tests to pass; do not weaken assertions.
-- Do not fabricate results; if a case was not executed, mark it NOT RUN with the reason.
-- Score against <adapted IEEE 829 checklist> and list Fail/Partial rows.
+@<path-to-folder>/verification/TestPlan_IEEE 829-2008_prompt.md
+@<path-to-folder>/verification/TestCase_RTM_IEEE_829_Prompt.md
+@<path-to-folder>/verification/TestReport_IEEE_829_Prompt.md
 ```
+
+Plan first, then design the cases and the matrix, then write the report from the recorded evidence. Each
+template refuses to state a result it cannot trace to an evidence path. The test-plan file name contains a space:
+attach it if your tool cannot resolve a reference containing one.
 
 **Outputs:** `TEST_PLAN.md`, `TEST_CASES.md`, `RTM.md`, `evidence/<run-id>/`, defect list,
 `TEST_REPORT.md`, approval record.
@@ -808,7 +746,7 @@ risk tier.
 |---|---|---|
 | Checklist | [verification/Code_Review_IEEE_1028_Checklist.xlsx](./verification/Code_Review_IEEE_1028_Checklist.xlsx) | Review record: objective, entry criteria, design conformance, logic, tests, security, documentation |
 | Guidance | [AI_SDLC-SOP.md](./AI_SDLC-SOP.md) §5.8, §8 | Review rules and what the PR record must contain |
-| Prompt | none in this kit — use the A7 skeleton in a read-only reviewer role | One finding per line, with file and line |
+| Prompt | [verification/Code_Review_IEEE_1028_Prompt.md](./verification/Code_Review_IEEE_1028_Prompt.md) | Read-only review: findings per line, blocking separated from non-blocking, no approval |
 
 **Steps**
 
@@ -823,22 +761,14 @@ risk tier.
 | 7 | Obtain the domain, security or architecture approvals the risk tier requires and confirm they apply to the exact commit to be merged | approvals |
 | 8 | Record accepted non-blocking follow-ups with an owner, then merge under branch protection | merge + follow-ups |
 
-**Prompt pattern**
+**Run**
 
 ```text
-Act as a read-only reviewer. Do not modify any file.
-Review the diff of <branch/PR> against docs/05-development/tasks/<task-id>.md
-and the acceptance criteria in docs/03-analysis/USER_STORIES.md.
-
-1. Score verification/Code_Review_IEEE_1028_Checklist.xlsx row by row:
-   Status, Evidence (file:line), Notes.
-2. Report each finding as: severity | file:line | problem | suggested fix.
-3. Check tests for meaningful assertions and edge cases, not coverage theatre.
-4. Check for security issues: injection, authorization gaps, secrets, unsafe defaults,
-   unvalidated input, data exposure.
-5. List what you could not verify.
-Do not approve, merge or deploy; you are input to a human reviewer.
+@<path-to-folder>/verification/Code_Review_IEEE_1028_Prompt.md
 ```
+
+The template is a read-only reviewer: it scores the IEEE 1028 checklist with `file:line` evidence, separates
+blocking from non-blocking findings, and states that it is not the approval.
 
 **Outputs:** PR with review record, approvals on the exact commit, follow-up items with owners.
 
@@ -1026,7 +956,7 @@ unauthorized action, or produces changes the owner cannot validate.
 
 | Phase | Prompt(s) in this kit | Checklist(s) in this kit | Primary artifacts |
 |---|---|---|---|
-| 1 Intake | — | — | `intent.md`, `glossary.md`, `stakeholders.md`, `sources.md` |
+| 1 Intake | `requirements/Intake_Intent_Prompt.md` | — (SOP §5.1 exit criteria) | `intent.md`, `glossary.md`, `stakeholders.md`, `sources.md` |
 | 2 Requirements | `analysis/BRD_Elicitation_Prompt_IEEE_standard.md`, `analysis/BRD_Prompt_IEEE_standard.md`; template `requirements/BRD-Template.md`/`.docx` | `analysis/BRD_IEEE_29148_Checklist.xlsx` | `BRD.md`, `interviews/SRC-*.md`, `brd-audit.md` |
 | 3 Analysis | `analysis/PRD_Prompt_IEEE_standard.md`, `analysis/PRD_prompt.md`, `analysis/PRD_Prompt_with_template.md` | `analysis/PRD_IEEE_29148_Checklist.xlsx` | `PRD.md`/`SRS.md`, `USER_STORIES.md`, `traceability.md`, `prd-audit.md` |
 | 4 Design | `design/SAD_Prompt_IEEE_standard.md`, `design/SAD_prompt.md`, `design/SAD_Prompt_with_template_.md` | `design/SAD_IEEE_1016_Checklist.xlsx` | `SAD.md`, `ADR-*.md` |
@@ -1035,13 +965,14 @@ unauthorized action, or produces changes the owner cannot validate.
 | 4 Design | `design/apiDesign_prompt.md` | `design/API_Design_IEEE-1016-2009Checklist.xlsx` | `openapi.yaml`, `api.md` |
 | 4 Design | `design/databaseDesign_SQL_prompt.md`, `databaseDesign_NoSQL_prompt.md`, `databaseDesign_VectorDB_prompt.md`, `databaseDesign_GraphrDB_prompt.md` | `design/Database_Design_Checklist.xlsx`, `design/Polyglot_DB_Design_Checklist.xlsx`, `design/Checklist_Database Design Review.xlsx` | `data/model.md` |
 | 4 Design | `design/UI-UX-Design_prompt.md` | `design/UI_UX_Design_IEEE-1016-2009_Checklist.xlsx` | `UI_UX_design/` |
+| 4 Design | `design/Design_Audit_Prompt.md` | `design/SAD_IEEE_1016_Checklist.xlsx` + per-artifact checklists | `design-audit.md` |
 | 5 Planning | `development/DevPlan_ISO_24748_5_Prompt.md`, `development/TaskBreakdown_ISO_21511_Prompt.md` | `development/DevPlan_ISO_24748_5_Checklist.xlsx` | `Software_Development_Plan.md`, `WBS.md`, `tasks/*.md` |
-| 6 Implementation | — (task card + A7 skeleton) | `verification/Code_Review_IEEE_1028_Checklist.xlsx` (used at review) | code, tests, updated `traceability.md` |
-| 7 Verification | `verification/TestPlan_IEEE 829-2008_prompt.md` | `verification/Test_Plan_IEEE_829_Checklist.xlsx` | `TEST_PLAN.md`, `TEST_CASES.md`, `RTM.md`, `TEST_REPORT.md`, `evidence/` |
-| 8 Review | — (A7 skeleton, read-only reviewer) | `verification/Code_Review_IEEE_1028_Checklist.xlsx` | PR + review record + approvals |
-| 9 Release | — | — | release record |
-| 10 Operations | — | — | runbooks, incident records |
-| 11 Decommissioning | — | — | decommissioning record |
+| 6 Implementation | `development/Implementation_Task_Prompt.md` | `verification/Code_Review_IEEE_1028_Checklist.xlsx` (used at review) | code, tests, updated `traceability.md` |
+| 7 Verification | `verification/TestPlan_IEEE 829-2008_prompt.md`, `verification/TestCase_RTM_IEEE_829_Prompt.md`, `verification/TestReport_IEEE_829_Prompt.md` | `verification/Test_Plan_IEEE_829_Checklist.xlsx` | `TEST_PLAN.md`, `TEST_CASES.md`, `RTM.md`, `TEST_REPORT.md`, `evidence/` |
+| 8 Review | `verification/Code_Review_IEEE_1028_Prompt.md` | `verification/Code_Review_IEEE_1028_Checklist.xlsx` | PR + review record + approvals |
+| 9 Release | — (organization release process) | — | release record |
+| 10 Operations | — (organization incident process) | — | runbooks, incident records |
+| 11 Decommissioning | — (organization decommissioning process) | — | decommissioning record |
 
 ## Appendix B — Gate summary
 

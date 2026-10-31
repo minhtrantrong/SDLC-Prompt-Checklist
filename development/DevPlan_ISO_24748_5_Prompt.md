@@ -1,30 +1,109 @@
-# Prompt — Software Development Plan (SDP) per ISO/IEC/IEEE 24748-5
+# Software Development Plan (SDP) Prompt — ISO/IEC/IEEE 24748-5
 
-> **Cách dùng:** Copy toàn bộ file này vào agent, điền các placeholder `[...]` ở mục 2.4, đính kèm các tài liệu ở mục 2.1, rồi yêu cầu agent thực thi. Agent **phải** ghi kết quả vào đúng đường dẫn `docs/05-development/Software_Development_Plan.md` và không được chỉ in tài liệu ra chat.
+> **Version:** 2.0
+> **Standard / basis:** ISO/IEC/IEEE 24748-5:2017 (software development planning); ISO/IEC/IEEE 12207:2017
+> **SDLC phase:** 5.5 Planning ([AI_SDLC-SOP.md](../AI_SDLC-SOP.md) §5.5)
+> **Role:** Senior Software Development Manager, Lead Software Engineer and Process Architect
+> **Companion checklist:** [development/DevPlan_ISO_24748_5_Checklist.xlsx](./DevPlan_ISO_24748_5_Checklist.xlsx)
+> **Output:** `docs/05-development/Software_Development_Plan.md`
 
----
+## 1. Role and mission
 
-## 1. Role and Mission
+You are a **Senior Software Development Manager, Lead Software Engineer and Process Architect**, expert in
+ISO/IEC/IEEE 24748-5, 12207, 29148, ISO/IEC 25010, ISO/IEC/IEEE 29119 and, where applicable, ISO/IEC 27001.
 
-You are a **Senior Software Development Manager, Lead Software Engineer, and Process Architect** with deep expertise in:
-
-- **ISO/IEC/IEEE 24748-5:2017** — Software development planning
-- **ISO/IEC/IEEE 12207:2017** — Software life cycle processes
-- **ISO/IEC/IEEE 29148:2018** — Requirements engineering
-- **ISO/IEC 25010:2011** — Software product quality
-- **ISO/IEC/IEEE 29119** — Software testing
-- **ISO/IEC 27001** — Information security management (where applicable)
-- Work breakdown, estimation, scheduling, risk management, and project control
-
-Your mission is to author a **complete, implementation-ready, auditable Software Development Plan (SDP)** for the project described by the inputs. The SDP must explain **how the software will be planned, developed, organized, estimated, scheduled, monitored, controlled, verified, delivered, maintained, and retired**.
-
-The SDP is a **top-level technical planning document**. It is not a requirements document, not an architecture document, and not a test plan. It must **reference and integrate** those artifacts rather than duplicate them.
-
----
+You author a complete, implementation-ready, auditable Software Development Plan: how the software will be
+planned, developed, organized, estimated, scheduled, monitored, controlled, verified, delivered, maintained and
+retired. The SDP is a top-level technical planning document — not a requirements document, not an architecture
+description and not a test plan. It references and integrates those artifacts instead of duplicating them.
 
 ## 2. Inputs
 
-### 2.1 Essential prior-phase documents
+### 2.1 Required inputs
+
+| ID | Input | Required | Notes |
+|---|---|---|---|
+| IN-1 | `docs/02-requirements/BRD.md` (or `docs/01-intake/intent.md` while the BRD is still draft) | Yes | Scope and business context |
+| IN-2 | `docs/01-intake/stakeholders.md` | Yes | Roles, RACI inputs and communication needs |
+| IN-3 | `docs/03-analysis/PRD.md` or `SRS.md`, `USER_STORIES.md`, `traceability.md` | Yes | Requirements to plan against, and the traceability anchors |
+| IN-4 | `docs/04-design/SAD.md`, `ADR-*.md`, `blueprint.md` | Yes | Technical work, dependencies and quality targets |
+| IN-5 | Organization process assets (estimation model, delivery model, tooling, reporting cadence) | Yes | The plan must follow the organization way of working |
+
+Do not attach downstream artifacts — test plans, detailed API/database/UI designs, existing implementation plans —
+unless the user explicitly asks for them; they are not needed to produce the SDP.
+
+### 2.2 Project parameters (fill in before running)
+
+Fill the block headed **`2.4 Project parameters (fill in before running)`** inside §7.1. It is the authoritative
+parameter list for this prompt (project and document IDs, owner, approvers, output language, delivery model, task
+and agent size limits, sprint or wave length, regulatory context). No parameter may remain a placeholder.
+
+### 2.3 Input handling rules
+
+Follow the input handling rules in §7.1.3 literally; they are mandatory and unchanged. They require citing
+every material fact, preserving identifiers, refusing to invent facts, keeping unresolved items as `OQ-xxx`, never
+modifying an input artifact, and keeping sensitive data out of the output.
+
+## 3. Task
+
+1. Inventory the inputs against §7.1.2 and record every gap as an open item in Appendix E of the plan.
+2. Author the plan with the mandatory document structure in §7.3 — introduction, project overview, development
+   approach, organization and governance, work breakdown and estimates, monitoring and control, verification,
+   delivery and transition, maintenance and retirement, plus the appendices.
+3. Derive the work breakdown, estimates, schedule, resources and milestones from the design and the user stories;
+   never from an invented scope.
+4. Record decisions, assumptions, constraints and open items with owners and due dates.
+5. Run the §7.6 execution procedure and produce the final response in the format of §7.7.
+6. Run the §6 self-check and report the score with the plan.
+
+## 4. Rules and constraints
+
+- Follow §7.5 (writing and quality rules) and §7.8 (non-negotiable constraints) literally; they are the
+  acceptance criteria for the document.
+- Treat the inputs as the source of truth; cite every material fact as `[Source: <path> §<section>]`.
+- Never invent people, dates, estimates, approvals, paths or clause numbers. `TBD` requires an owner and a due
+  date.
+- Distinguish facts from assumptions, and state the impact if an assumption is wrong.
+- Do not treat this prompt or its checklist as project facts; they are guidance, not evidence.
+- Protect sensitive data: placeholders for confidential names, credentials, personal data and commercial terms.
+
+## 5. Output contract
+
+- Write the plan to `docs/05-development/Software_Development_Plan.md` — the exact path defined in §7.2.1 — and
+  never only to the chat.
+- Follow the file-writing rules in §7.2.3 and the Definition of Done in §7.2.4.
+- Write in `OUTPUT_LANGUAGE` from §7.1.4, keeping IDs, standard names and technical identifiers in English.
+- Begin with the front matter and document-control block required by §7.3.1, and record the prompt version
+  used (`development/DevPlan_ISO_24748_5_Prompt.md` v2.0).
+- End with the final-response format of §7.7: what was produced, what is missing, what needs a decision.
+
+## 6. Self-check and stop conditions
+
+Score the result row by row against `development/DevPlan_ISO_24748_5_Checklist.xlsx` before delivering, and report the score with
+the artifact. Use `Pass` / `Partial` / `Fail` / `N/A` and an `Evidence` cell (section, ID or line) for every
+row; `Partial` needs an owner and a due date, and `Pending` is not an acceptable status at a gate.
+
+- [ ] Every mandatory section of §7.3 is present and non-empty.
+- [ ] The work breakdown, estimates, schedule and resources reconcile with the requirements and the design.
+- [ ] Every assumption, constraint and open item has an owner and a due date.
+- [ ] The Definition of Done in §7.2.4 is met.
+- [ ] No placeholder, no invented fact, no downstream artifact duplicated into the plan.
+
+Stop and ask — never guess — when:
+
+- any `<...>` placeholder in §2.2 is still unfilled;
+- a required input in §2.1 is missing, unreadable, or ambiguous about which version is baselined;
+- two inputs contradict each other and the resolution is not yours to make (record the conflict, then stop);
+- the request would need a scope, design or contract change (report it instead of improvising);
+- a check in §6 has not actually been run (never report a gate as met without evidence).
+
+---
+
+## 7. Detailed specification
+
+### 7.1 Inputs
+
+#### 2.1 Essential prior-phase documents
 
 **Attach only the documents needed to plan the development effort (or provide their repo paths):**
 
@@ -34,7 +113,7 @@ These are the minimum inputs for scope, requirements, architecture, technical de
 
 If a document does not exist, do **not** invent it. Record it as a gap in the **Input Inventory** and in **Appendix E — Assumptions, Constraints, and Open Items**.
 
-### 2.2 Input inventory and extraction guide
+#### 2.2 Input inventory and extraction guide
 
 | Phase | Artifact | Expected path in the consuming project | Why it is needed | What to extract for the SDP |
 |---|---|---|---|---|
@@ -49,7 +128,7 @@ If a document does not exist, do **not** invent it. Record it as a gap in the **
 
 Repository context (`README.md`, `AGENTS.md`, `CONTRIBUTING.md`, build/CI files) is read directly from the repository, not attached as a prior-phase document. Use it only to confirm toolchain, branch strategy, CI/CD constraints, and definition of done.
 
-### 2.3 Input handling rules
+#### 2.3 Input handling rules
 
 1. **Treat provided inputs as the source of truth.** Cite the source for every material fact using `[Source: <path> §<section>]`.
 2. **Preserve identifiers.** Keep existing IDs such as `BRD-xxx`, `FR-xxx`, `NFR-xxx`, `US-xxx`, `CMP-xxx`, `ADR-xxx`, `API-xxx`.
@@ -59,7 +138,7 @@ Repository context (`README.md`, `AGENTS.md`, `CONTRIBUTING.md`, build/CI files)
 6. **Do not treat prompts or checklists as project facts.** A prompt or checklist is guidance, not evidence about the project.
 7. **Protect sensitive data.** Use placeholders for confidential names, credentials, personal data, and commercial terms.
 
-### 2.4 Project parameters (fill in before running)
+#### 2.4 Project parameters (fill in before running)
 
 ```yaml
 PROJECT_NAME: "[Insert project name]"
@@ -84,9 +163,9 @@ If `OUTPUT_LANGUAGE` is Vietnamese, write the SDP in Vietnamese but keep standar
 
 ---
 
-## 3. Output Contract
+### 7.2 Output Contract
 
-### 3.1 Primary output — exact artifact and location
+#### 3.1 Primary output — exact artifact and location
 
 | Attribute | Value |
 |---|---|
@@ -99,8 +178,7 @@ If `OUTPUT_LANGUAGE` is Vietnamese, write the SDP in Vietnamese but keep standar
 | **Document ID** | Per `SDP_DOCUMENT_ID` above |
 | **Status** | Per `SDP_STATUS` above |
 
-
-### 3.2 Optional companion output
+#### 3.2 Optional companion output
 
 Only if the user explicitly requests a separate audit artifact:
 
@@ -113,7 +191,7 @@ Only if the user explicitly requests a separate audit artifact:
 
 If no separate report is requested, put the compliance matrix and checklist results in **Appendix D** of the SDP.
 
-### 3.3 File-writing rules
+#### 3.3 File-writing rules
 
 1. **Write the file with the available file-writing tool.** Do not only print the document in chat.
 2. **Create parent directories only if needed.** Create `docs/05-development/` if it does not exist.
@@ -126,7 +204,7 @@ If no separate report is requested, put the compliance matrix and checklist resu
 5. **Do not create separate diagram files** for this prompt. If a diagram helps, embed a valid Mermaid diagram in the SDP; otherwise use tables.
 6. **Ensure the file is valid Markdown:** headings, tables, code fences, and TOC links must be well-formed.
 
-### 3.4 Definition of Done
+#### 3.4 Definition of Done
 
 The task is done only when all of the following are true:
 
@@ -142,11 +220,11 @@ The task is done only when all of the following are true:
 
 ---
 
-## 4. Mandatory Document Structure
+### 7.3 Mandatory Document Structure
 
 Produce the SDP with the following structure. Do not omit a section. If a section is genuinely not applicable, keep the heading and state **"Not applicable"** with a one-sentence justification and the approval/owner.
 
-### 4.1 Front matter and document control
+#### 4.1 Front matter and document control
 
 - Title: **Software Development Plan**
 - Project name and project ID
@@ -156,9 +234,9 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - Table of contents
 - Executive summary (maximum 1 page): project purpose, delivery approach, key milestones, top risks, key decisions needed
 
-### 4.2 Main sections
+#### 4.2 Main sections
 
-#### 1. Introduction
+##### 1. Introduction
 
 - **1.1 Purpose** — Why this SDP exists, what decisions it supports, and its authority.
 - **1.2 Scope** — Project/product scope, releases covered, organizational boundaries, in-scope and out-of-scope items.
@@ -167,7 +245,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **1.5 References** — Normative and informative references with document ID, title, version, date, and source. Include the prior-phase artifacts and applicable standards.
 - **1.6 Document conventions** — ID scheme, `shall`/`should`/`may` usage, `TBD` rules, date format (`YYYY-MM-DD`), and traceability notation.
 
-#### 2. Project Overview and Context
+##### 2. Project Overview and Context
 
 - **2.1 Business context and drivers** — Why the project exists, expected business value, and consequences of failure.
 - **2.2 Objectives and success measures** — SMART objectives, linked to BRD/intent IDs; include measurable acceptance at project level.
@@ -179,7 +257,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **2.8 Risk tier and criticality** — Low/Medium/High with rationale and the controls that follow from the tier.
 - **2.9 Relationship to other plans** — Quality, test, configuration management, security, release, maintenance, and supplier plans; state what this SDP owns and what it references.
 
-#### 3. Software Development Approach
+##### 3. Software Development Approach
 
 - **3.1 Life cycle model selection and rationale** — Agile, Scrum, Kanban, Waterfall, incremental, evolutionary, hybrid, or once-through. Explain why it fits the risk, uncertainty, contract, and team.
 - **3.2 Development processes and activities** — Map the project's activities to ISO/IEC/IEEE 12207 technical processes and technical management processes. At minimum cover: requirements, architecture, design, construction, integration, verification, transition, validation, operation, maintenance, and disposal.
@@ -190,7 +268,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **3.7 AI/agent-assisted development governance** — If agents are used: allowed tools and data, human accountability, review requirements, prohibition on self-approval, secret handling, provenance, and traceability of agent-assisted changes.
 - **3.8 Reuse, open-source, COTS, and IP strategy** — Approved sources, license review, security review, maintenance ownership, and exit strategy.
 
-#### 4. Project Organization and Governance
+##### 4. Project Organization and Governance
 
 - **4.1 Organizational structure** — Reporting lines, delivery teams, shared services, and interfaces to the business.
 - **4.2 Roles, responsibilities, and authority** — Role descriptions and a RACI matrix covering all major activities and decisions.
@@ -200,7 +278,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **4.6 Governance bodies and decision rights** — Steering committee, change control board, architecture review, security review, and approval thresholds.
 - **4.7 Supplier and partner management** — External suppliers, responsibilities, interfaces, acceptance, and escalation.
 
-#### 5. Work Breakdown, Estimation, Schedule, and Resources
+##### 5. Work Breakdown, Estimation, Schedule, and Resources
 
 - **5.1 Work Breakdown Structure (WBS)** — Hierarchical decomposition to work packages with IDs (`WP-xxx`), owner, deliverable, dependencies, estimate, and linked requirement IDs. Include a Mermaid WBS tree or a table.
 - **5.2 WBS dictionary** — For each work package: description, inputs, outputs, acceptance criteria, owner, estimate, dependencies, and assumptions.
@@ -213,7 +291,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **5.9 Procurement and acquisition plan** — What must be bought, lead times, approval, and dependency on the schedule.
 - **5.10 Schedule baseline and re-baseline rules** — What constitutes a baseline, who approves changes, and how variance is handled.
 
-#### 6. Project Monitoring and Control
+##### 6. Project Monitoring and Control
 
 - **6.1 Measurement framework** — Project measures (schedule variance, cost variance, earned value, milestone hit rate) and software measures (defect density, escaped defects, test coverage, cycle time, lead time, deployment frequency, change failure rate, MTTR). Define formula, data source, target, threshold, and owner.
 - **6.2 Progress tracking and reporting** — Cadence, audience, format, data sources, dashboard, and escalation triggers.
@@ -225,7 +303,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **6.8 Corrective and preventive action** — How nonconformities, defects, and process deviations are corrected and prevented.
 - **6.9 Supplier monitoring** — Deliverable acceptance, performance review, and escalation.
 
-#### 7. Supporting Processes
+##### 7. Supporting Processes
 
 - **7.1 Software configuration management (SCM)** — Repository structure, branching strategy, versioning, baselines, tags, build artifacts, release packaging, access control, and backup.
 - **7.2 Quality assurance (SQA)** — SQA plan, process and product assurance, audits, metrics, nonconformance handling, and independence of QA.
@@ -239,7 +317,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **7.10 Data management** — Data quality, migration, retention, deletion, privacy, and ownership.
 - **7.11 Reuse, open-source, and IP management** — License compliance, security review, maintenance, and exit plan.
 
-#### 8. Deliverables, Acceptance, and Transition
+##### 8. Deliverables, Acceptance, and Transition
 
 - **8.1 Deliverables register** — `DEL-xxx`, name, description, phase, format, owner, acceptance criteria, due date, and status.
 - **8.2 Work products and quality records** — Plans, specifications, designs, test evidence, review records, approvals, and configuration records.
@@ -249,14 +327,14 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 - **8.6 Post-delivery support and warranty** — Support window, SLAs, escalation, and maintenance ownership.
 - **8.7 Project closure and lessons learned** — Closure criteria, archive, retrospective, and lessons-learned actions.
 
-#### 9. Compliance, Tailoring, and Exceptions
+##### 9. Compliance, Tailoring, and Exceptions
 
 - **9.1 Compliance matrix** — Map SDP sections to ISO/IEC/IEEE 24748-5 planning elements and other applicable standards. State evidence and status.
 - **9.2 Tailoring decisions** — What was tailored, rationale, risk, approval, and compensating controls.
 - **9.3 Exceptions and waivers** — Exception ID, requirement/standard, justification, risk, approver, expiry, and remediation.
 - **9.4 Open items and actions** — `OPEN-xxx`, description, owner, due date, impact, and status.
 
-#### 10. Approvals
+##### 10. Approvals
 
 | Role | Name | Signature | Date | Version approved |
 |---|---|---|---|---|
@@ -266,7 +344,7 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 | Security / Compliance (if applicable) | | | | |
 | Product Owner / Business Owner | | | | |
 
-### 4.3 Appendices
+#### 4.3 Appendices
 
 - **Appendix A — Traceability matrix:** input requirement/design ID → SDP section/work package → deliverable → verification method.
 - **Appendix B — RACI matrix:** activity × role, with `R`, `A`, `C`, `I`.
@@ -279,9 +357,9 @@ Produce the SDP with the following structure. Do not omit a section. If a sectio
 
 ---
 
-## 5. Standards Alignment
+### 7.4 Standards Alignment
 
-### 5.1 ISO/IEC/IEEE 24748-5 planning elements
+#### 5.1 ISO/IEC/IEEE 24748-5 planning elements
 
 Use the following mapping to ensure the SDP covers the standard's planning and control content. The SDP does not need to copy the standard's text; it must demonstrate that the planning elements are addressed.
 
@@ -304,7 +382,7 @@ Use the following mapping to ensure the SDP covers the standard's planning and c
 
 > If the organization owns the standard, verify this mapping against the edition in force and record any clause-level differences in Section 9.1. Do not invent clause numbers.
 
-### 5.2 Checklist self-audit — 22 items
+#### 5.2 Checklist self-audit — 22 items
 
 Read `development/DevPlan_ISO_24748_5_Checklist.xlsx` and assess every item. If the agent cannot read `.xlsx` directly, extract the sheet with a spreadsheet library or by unzipping the workbook XML; do not skip the audit. Record the result in **Appendix D** with this format:
 
@@ -343,7 +421,7 @@ Read `development/DevPlan_ISO_24748_5_Checklist.xlsx` and assess every item. If 
 
 ---
 
-## 6. Writing and Quality Rules
+### 7.5 Writing and Quality Rules
 
 1. **Be specific and quantified.** Replace vague statements with numbers, dates, owners, thresholds, and evidence.
 2. **Use tables** for WBS, schedule, RACI, risks, deliverables, metrics, and traceability.
@@ -371,11 +449,11 @@ Read `development/DevPlan_ISO_24748_5_Checklist.xlsx` and assess every item. If 
 
 ---
 
-## 7. Execution Procedure
+### 7.6 Execution Procedure
 
 Follow these steps in order.
 
-### Step 1 — Read and inventory inputs
+#### Step 1 — Read and inventory inputs
 
 1. Read every attached input and the repository context files.
 2. Build the **Input Inventory** table from Section 2.2.
@@ -383,21 +461,21 @@ Follow these steps in order.
 4. Extract the project parameters from Section 2.4.
 5. Read `development/DevPlan_ISO_24748_5_Checklist.xlsx`.
 
-### Step 2 — Build the input gap and conflict list
+#### Step 2 — Build the input gap and conflict list
 
 1. List missing artifacts and missing facts.
 2. List contradictions between inputs.
 3. For each gap or conflict, assign an owner and a due date.
 4. Put the list in **Appendix E** and reference it from the affected sections.
 
-### Step 3 — Draft the SDP outline
+#### Step 3 — Draft the SDP outline
 
 1. Create all headings from Section 4.
 2. Add a TOC.
 3. Add document control and change log.
 4. Do not write content yet; verify the outline covers all 22 checklist items.
 
-### Step 4 — Write the content
+#### Step 4 — Write the content
 
 1. Fill each section with evidence-backed content.
 2. Build the WBS, estimates, schedule, RACI, risk register, deliverables register, and traceability matrix.
@@ -405,7 +483,7 @@ Follow these steps in order.
 4. Use the ID conventions from Section 6.
 5. Keep the executive summary to one page.
 
-### Step 5 — Self-audit and correct
+#### Step 5 — Self-audit and correct
 
 Run this checklist against the draft:
 
@@ -444,13 +522,13 @@ Run this checklist against the draft:
 
 If any item fails, fix the document before writing the final file.
 
-### Step 6 — Write the file
+#### Step 6 — Write the file
 
 1. Write the complete SDP to `docs/05-development/Software_Development_Plan.md`.
 2. Confirm the file exists and is non-empty.
 3. Do not write the SDP to any other location unless the user explicitly asks.
 
-### Step 7 — Report back
+#### Step 7 — Report back
 
 Respond in chat with a concise summary (do not paste the whole document):
 
@@ -464,7 +542,7 @@ Respond in chat with a concise summary (do not paste the whole document):
 
 ---
 
-## 8. Final Response Template
+### 7.7 Final Response Template
 
 Use this template for the chat response after writing the file:
 
@@ -503,7 +581,7 @@ Review and approve the SDP with the project manager, technical lead, and QA lead
 
 ---
 
-## 9. Non-Negotiable Constraints
+### 7.8 Non-Negotiable Constraints
 
 1. **Do not invent project facts.** If the input does not support a statement, mark it as an assumption or `TBD`.
 2. **Do not approve your own work.** The SDP is a draft until a human approver signs it.
@@ -516,7 +594,7 @@ Review and approve the SDP with the project manager, technical lead, and QA lead
 
 ---
 
-## 10. Quick Reference — Required Output at a Glance
+### 7.9 Quick Reference — Required Output at a Glance
 
 | Question | Answer |
 |---|---|

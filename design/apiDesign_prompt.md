@@ -1,11 +1,130 @@
-You are a professional software developer, please generate a complete, standards-compliant Software API Design with full traceability from stakeholder concerns to design elements that following the **Standard:** IEEE 1016-2009.
-**Output:**
-- Save the output as a .md or [.sql] file into `docs/04-design/`
+# IEEE 1016-2009 API Design Prompt
+
+> **Version:** 2.0
+> **Standard / basis:** IEEE 1016-2009 (interface design); OpenAPI 3.x
+> **SDLC phase:** 5.4 Design and modeling ([AI_SDLC-SOP.md](../AI_SDLC-SOP.md) §5.4)
+> **Role:** API Designer and Integration Architect
+> **Companion checklist:** [design/API_Design_IEEE-1016-2009Checklist.xlsx](./API_Design_IEEE-1016-2009Checklist.xlsx)
+> **Output:** `docs/04-design/openapi.yaml` and `docs/04-design/api.md`
+
+## 1. Role and mission
+
+You are an **API Designer and Integration Architect**. You turn the architecture's interface view and the
+baselined requirements into an implementable, testable interface contract with full traceability to
+stakeholder concerns and requirements.
+
+The contract is the source of truth for both the implementation and the tests. Changing it later is a design
+change, not a code change.
+
+## 2. Inputs
+
+### 2.1 Required inputs
+
+| ID | Input | Required | Notes |
+|---|---|---|---|
+| IN-1 | `docs/04-design/SAD.md` | Yes | Interface view, components, protocols and boundaries |
+| IN-2 | `docs/03-analysis/PRD.md` or `SRS.md` | Yes | Functional and non-functional requirements, including NFR targets for latency and availability |
+| IN-3 | `docs/03-analysis/USER_STORIES.md` | Optional | User-visible flows the interface must support |
+| IN-4 | `docs/04-design/ADR-*.md` | Optional | Decisions the contract must respect |
+| IN-5 | Organization API style guide, security standard and data classification | Yes | Naming, versioning, auth, error format and rate-limit rules |
+
+### 2.2 Project parameters (fill in before running)
+
+```yaml
+SYSTEM_NAME: "[INSERT SYSTEM NAME]"
+API_DOCUMENT_ID: "[e.g., PROJECT-XXX-API]"
+API_VERSION: "[e.g., v1]"
+DOCUMENT_OWNER: "[Name, role]"
+DOCUMENT_APPROVERS: "[Name, role; Name, role]"
+OUTPUT_LANGUAGE: "[Vietnamese | English]"
+OPENAPI_OUTPUT_PATH: "docs/04-design/openapi.yaml"
+API_DOC_OUTPUT_PATH: "docs/04-design/api.md"
+PROTOCOL: "[REST | GraphQL | gRPC | event/message]"
+AUTH_MODEL: "[e.g., OAuth2/OIDC + JWT at the gateway, mTLS for internal calls]"
+ERROR_FORMAT: "[e.g., RFC 9457 problem+json]"
+PAGINATION_PAGINATION: "[e.g., cursor-based]"
+RATE_LIMIT_POLICY: "[per-client limit and burst, or 'none']"
+COMPATIBILITY_POLICY: "[backward compatible within a major version, deprecation window]"
+DATA_CLASSIFICATION: "[public | internal | confidential | restricted]"
+TESTABLE_ACCEPTANCE: "yes"
+```
+
+### 2.3 Input handling rules
+
+Treat the inputs in §2.1 as the source of truth.
+
+- Cite every material fact as `[Source: <path> §<section>]` or by its identifier.
+- Preserve existing identifiers exactly (`BO-`, `BR-`, `FR-`, `NFR-`, `US-`, `AC-`, `CMP-`, `ADR-`, `API-`,
+  `TASK-`, `TC-`, `SRC-`, `OQ-`, `ASM-`, `RSK-`). Never renumber, reuse or invent an ID.
+- Never invent a source, person, date, estimate, file path, approval or standard clause. `TBD` is allowed
+  only with an owner and a due date.
+- Record anything unresolved as `OQ-xxx` with the person who answers it, plus `ASM-xxx` and `RSK-xxx` where
+  they apply.
+- Do not modify an input artifact. Write only the output path in §5.
+- Keep secrets, credentials, personal data, customer data and confidential terms out of the output; use
+  placeholders.
+
+## 3. Task
+
+1. Complete the context, scope, stakeholders, concerns, quality-attribute scenarios and constraints tables in
+   §7.1 and §7.2 from the SAD and the requirements.
+2. Design the interface operations under §7.3: every operation has a purpose, an owner component, auth and
+   authorization rules, request and response schemas, examples, error codes and a requirement mapping.
+3. Define cross-cutting behaviour explicitly: versioning, pagination, filtering, idempotency for mutating
+   calls, rate limits, timeouts, retries and error format.
+4. Write the machine-readable contract to `OPENAPI_OUTPUT_PATH` and the narrative to `API_DOC_OUTPUT_PATH`.
+5. Map every operation to `FR-xxx` and to the requirement it serves; flag any operation with no requirement.
+6. Do not change a contract that the SAD already fixes; a necessary difference becomes a new ADR.
+7. Run the §6 self-check and report the score with the contract.
+
+## 4. Rules and constraints
+
+- One operation, one purpose; no endpoint that exists only to serve a screen.
+- Every request is validated, every error is typed and documented, and no error leaks internal detail.
+- Authorization is specified per operation and per role, not assumed from authentication.
+- Mutating operations state their idempotency behaviour; the contract must be safe to retry.
+- No secrets, tokens or personal data in examples; use synthetic values.
+- The contract must be valid OpenAPI 3.x and reference no undefined schema.
+
+## 5. Output contract
+
+- Write the contract to `OPENAPI_OUTPUT_PATH` and the narrative to `API_DOC_OUTPUT_PATH`; a chat-only answer is
+  not an artifact.
+- Write the narrative in `OUTPUT_LANGUAGE`, keeping operation IDs, schema names and standard terms in English.
+- Begin with document control: document ID, API version, owner, approvers, date and the prompt version used
+  (`design/apiDesign_prompt.md` v2.0).
+- Follow the section order of §7 unchanged.
+- End with the requirement-to-operation matrix, the compatibility and deprecation notes, and the `OQ-xxx` list
+  with owners and dates.
+
+## 6. Self-check and stop conditions
+
+Score the result row by row against `design/API_Design_IEEE-1016-2009Checklist.xlsx` before delivering, and report the score with
+the artifact. Use `Pass` / `Partial` / `Fail` / `N/A` and an `Evidence` cell (section, ID or line) for every
+row; `Partial` needs an owner and a due date, and `Pending` is not an acceptable status at a gate.
+
+- [ ] Every operation traces to an `FR-xxx` and declares auth, authorization, schemas and error codes.
+- [ ] All schemas are defined once and referenced; no undefined or duplicated schema.
+- [ ] Versioning, pagination, idempotency, rate limits and error format are specified.
+- [ ] The contract conforms to the SAD interface view; every difference has an ADR.
+- [ ] The OpenAPI document validates against the 3.x specification.
+- [ ] No secret, token or real personal data appears in examples.
+
+Stop and ask — never guess — when:
+
+- any `<...>` placeholder in §2.2 is still unfilled;
+- a required input in §2.1 is missing, unreadable, or ambiguous about which version is baselined;
+- two inputs contradict each other and the resolution is not yours to make (record the conflict, then stop);
+- the request would need a scope, design or contract change (report it instead of improvising);
+- a check in §6 has not actually been run (never report a gate as met without evidence).
+
 ---
 
-## 1. Context & Subject
+## 7. Detailed specification
 
-### 1.1 System Identification
+### 7.1 Context & Subject
+
+#### 1.1 System Identification
 
 [Provide detail description of your system - or attach your SRS/PRD or/and SAD documents at here]
 
@@ -17,7 +136,7 @@ You are a professional software developer, please generate a complete, standards
 | **Document Owner** | [Lead Architect / UX Lead / API Lead / Team] |
 | **Revision History** | [Version, Date, Author, Changes] |
 
-### 1.2 System Scope and External Boundaries
+#### 1.2 System Scope and External Boundaries
 
 Define the **external boundaries** of the system—what is inside the architecture versus what exists outside.
 
@@ -38,7 +157,7 @@ Define the **external boundaries** of the system—what is inside the architectu
 | **Device Support** | [e.g., Desktop (1920x1080+), Tablet (768x1024), Mobile (375x667+)] |
 | **Browser Support** | [e.g., Chrome 90+, Firefox 88+, Safari 14+, Edge 90+] |
 
-### 1.3 Assumptions and Constraints
+#### 1.3 Assumptions and Constraints
 
 | Type | Description |
 |------|-------------|
@@ -52,9 +171,9 @@ Define the **external boundaries** of the system—what is inside the architectu
 
 ---
 
-## 2. Stakeholders & Concerns
+### 7.2 Stakeholders & Concerns
 
-### 2.1 User Personas
+#### 2.1 User Personas
 
 Define the primary users of the system with their goals, needs, and pain points.
 
@@ -64,7 +183,7 @@ Define the primary users of the system with their goals, needs, and pain points.
 | **[e.g., Mike]** | [e.g., IT Administrator] | [e.g., 25-40, Technical] | [e.g., Monitor system health, Manage users] | [e.g., Lack of dashboards, Poor alerts] | [High] | [Weekly] |
 | **[e.g., Emily]** | [e.g., Customer Service Rep] | [e.g., 22-35, High School+] | [e.g., Resolve tickets fast, Access customer history] | [e.g., Cluttered interface, Hard to find info] | [Medium] | [Hourly] |
 
-### 2.2 API Consumer Personas
+#### 2.2 API Consumer Personas
 
 Define the primary API consumers of the system.
 
@@ -75,7 +194,7 @@ Define the primary API consumers of the system.
 | **[e.g., Internal Service]** | [First-party] | [High] | [Low latency, High throughput] | [Versioning, Backward compatibility] | [Very High: 1M/day] | [<50ms] |
 | **[e.g., Web App]** | [First-party] | [Medium] | [Rich data, Good UX] | [Over-fetching, Under-fetching] | [High: 50k/day] | [<300ms] |
 
-### 2.3 Stakeholder Identification
+#### 2.3 Stakeholder Identification
 
 Identify all stakeholders who have a vested interest in the system's design and operation.
 
@@ -92,7 +211,7 @@ Identify all stakeholders who have a vested interest in the system's design and 
 | **DevOps/SRE** | [e.g., Platform Team] | [e.g., Scalability, Resilience] | [e.g., UI performance monitoring] | [e.g., API monitoring, SLAs] |
 | **QA Engineers** | [e.g., Testing] | [e.g., Testability] | [e.g., Component testing] | [e.g., API contract testing] |
 
-### 2.4 Stakeholder Concerns (IEEE 1016-2009)
+#### 2.4 Stakeholder Concerns (IEEE 1016-2009)
 
 Map each stakeholder to their specific **concerns**—the non-functional requirements, quality attributes, and risks they care about.
 
@@ -111,7 +230,7 @@ Map each stakeholder to their specific **concerns**—the non-functional require
 | DevOps/SRE | Performance | High | [LCP <2.5s] | [API P95 <200ms] |
 | QA Engineer | Testability | High | [Component testing] | [API contract testing] |
 
-### 2.5 API Design Quality Attribute Scenarios
+#### 2.5 API Design Quality Attribute Scenarios
 
 Define concrete, measurable API quality scenarios.
 
@@ -128,7 +247,7 @@ Define concrete, measurable API quality scenarios.
 | **Observing** | [e.g., Distributed tracing, Structured logs] |
 | **Backward Compatibility** | [e.g., 100% for 2 major versions] |
 
-### 2.6 API Design Constraints Matrix
+#### 2.6 API Design Constraints Matrix
 
 | API Constraint | Requirement | Tool/Standard | Verification Method |
 |----------------|-------------|---------------|---------------------|
@@ -145,13 +264,13 @@ Define concrete, measurable API quality scenarios.
 
 ---
 
-## 3. Design Views (IEEE 1016-2009 Core)
+### 7.3 Design Views (IEEE 1016-2009 Core)
 
 The design is documented through **eight distinct views**, each addressing specific stakeholder concerns. **Every view now includes both UI/UX and API design elements.**
 
 ---
 
-### 3.1 Composition View
+#### 3.1 Composition View
 
 **Purpose:** Describes how the system is assembled from smaller units. Shows the hierarchical decomposition—**including UI layer and API layer composition**.
 
@@ -159,7 +278,7 @@ The design is documented through **eight distinct views**, each addressing speci
 
 **Stakeholder Concerns Addressed:** Maintainability, Modularity, Component Reusability, API Organization.
 
-#### Full System Composition Diagram:
+##### Full System Composition Diagram:
 
 ```
 flowchart TD
@@ -169,7 +288,7 @@ flowchart TD
         Components[UI Components]
         State[State Management]
     end
-    
+
     subgraph API[API Layer]
         subgraph Gateway[API Gateway]
             Auth[Authentication]
@@ -177,45 +296,45 @@ flowchart TD
             RateLimit[Rate Limiting]
             Cache[Response Cache]
         end
-        
+
         subgraph Public[Public API]
             REST[REST Endpoints]
             GraphQL[GraphQL Schema]
             Webhooks[Webhook Publishers]
         end
-        
+
         subgraph Internal[Internal API]
             gRPC[gRPC Services]
             Events[Event Publishers]
             Admin[Admin API]
         end
     end
-    
+
     subgraph Backend[Backend Services]
         SVC1[Service 1]
         SVC2[Service 2]
         SVC3[Service 3]
     end
-    
+
     subgraph Data[Data Layer]
         DB[(Database)]
         CacheDB[(Redis Cache)]
         Search[(Elasticsearch)]
         Queue[(Message Queue)]
     end
-    
+
     Pages --> Components
     Pages --> State
     State --> REST
     State --> GraphQL
-    
+
     API --> Gateway
     Gateway --> Public
     Gateway --> Internal
     Public --> SVC1
     Public --> SVC2
     Internal --> SVC3
-    
+
     SVC1 --> DB
     SVC1 --> CacheDB
     SVC2 --> Search

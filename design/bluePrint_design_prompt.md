@@ -1,11 +1,118 @@
-You are a professional software developer, please generate a complete, standards-compliant Software Blueprint Design with full traceability from stakeholder concerns to design elements that following the  **Standard:** IEEE 1016-2009.
-**Output:**
-- Save the output as a .md or [.sql] file into `docs/04-design/`
+# IEEE 1016-2009 Software Design Description (Blueprint) Prompt
+
+> **Version:** 2.0
+> **Standard / basis:** IEEE 1016-2009 (software design descriptions)
+> **SDLC phase:** 5.4 Design and modeling ([AI_SDLC-SOP.md](../AI_SDLC-SOP.md) §5.4)
+> **Role:** Software Designer and Architect
+> **Companion checklist:** [design/BluePrint_Design_IEEE_1016_2009_Checklist.xlsx](./BluePrint_Design_IEEE_1016_2009_Checklist.xlsx)
+> **Output:** `docs/04-design/blueprint.md` (or `.sql` where the design is expressed as DDL)
+
+## 1. Role and mission
+
+You are a **Software Designer** producing a complete, standards-compliant Software Design Description (the
+blueprint) with full traceability from stakeholder concern to design element, following IEEE 1016-2009.
+
+The blueprint is the design-level bridge between the architecture description and the implementation. It
+describes **how** the system is structured; it does not repeat the SAD's architecture rationale and does not
+carry UI, interface-contract or database-detail specifications, which have their own prompts in this folder.
+
+## 2. Inputs
+
+### 2.1 Required inputs
+
+| ID | Input | Required | Notes |
+|---|---|---|---|
+| IN-1 | `docs/04-design/SAD.md` | Yes | Architecture description; the blueprint elaborates it |
+| IN-2 | `docs/03-analysis/PRD.md` or `SRS.md` | Yes | Requirements and quality attributes |
+| IN-3 | `docs/03-analysis/USER_STORIES.md` | Optional | User-visible outcomes the design must support |
+| IN-4 | `docs/04-design/ADR-*.md` | Optional | Decisions the design must respect |
+| IN-5 | Approved coding and design conventions | Yes | Naming, layering and structural rules the design must follow |
+
+### 2.2 Project parameters (fill in before running)
+
+```yaml
+SYSTEM_NAME: "[INSERT SYSTEM NAME]"
+SDD_VERSION: "[e.g., v1.0]"
+DOCUMENT_DATE: "[YYYY-MM-DD]"
+DOCUMENT_OWNER: "[Lead Architect / Team]"
+DOCUMENT_APPROVERS: "[Name, role; Name, role]"
+OUTPUT_LANGUAGE: "[Vietnamese | English]"
+BLUEPRINT_OUTPUT_PATH: "docs/04-design/blueprint.md"
+DIAGRAM_FORMAT: "[Mermaid embedded in the .md | .drawio in docs/04-design/diagrams]"
+DESIGN_CONVENTIONS: "[layering, package naming, module boundaries from the organization standard]"
+```
+
+### 2.3 Input handling rules
+
+Treat the inputs in §2.1 as the source of truth.
+
+- Cite every material fact as `[Source: <path> §<section>]` or by its identifier.
+- Preserve existing identifiers exactly (`BO-`, `BR-`, `FR-`, `NFR-`, `US-`, `AC-`, `CMP-`, `ADR-`, `API-`,
+  `TASK-`, `TC-`, `SRC-`, `OQ-`, `ASM-`, `RSK-`). Never renumber, reuse or invent an ID.
+- Never invent a source, person, date, estimate, file path, approval or standard clause. `TBD` is allowed
+  only with an owner and a due date.
+- Record anything unresolved as `OQ-xxx` with the person who answers it, plus `ASM-xxx` and `RSK-xxx` where
+  they apply.
+- Do not modify an input artifact. Write only the output path in §5.
+- Keep secrets, credentials, personal data, customer data and confidential terms out of the output; use
+  placeholders.
+
+## 3. Task
+
+1. Complete the context, scope, assumptions and constraints tables in §7.1 using the SAD and the requirements.
+2. Identify stakeholders and their concerns, and map each concern to a quality-attribute scenario in §7.2.
+3. Describe the design through the eight views in §7.3, in the order given; keep every view traceable to the
+   concerns in §7.2.
+4. Link every design element to the `FR-xxx`/`NFR-xxx` IDs and `CMP-xxx` components it realizes.
+5. Where the SAD leaves a decision open, record it as `OQ-xxx`; do not invent an architectural decision here.
+6. Run the §6 self-check and report the score with the document.
+
+## 4. Rules and constraints
+
+- Every stakeholder concern maps to at least one view element, and every design element maps back to a concern
+  or a requirement. A design element with no upstream concern is either unnecessary or belongs in another view.
+- Describe design at the level of modules, classes, interfaces and interactions — not deployment topology,
+  which belongs to the SAD and the deployment diagram.
+- Fill every `[placeholder]` in the template; an unfilled placeholder is an incomplete design, not a style
+  choice.
+- Do not introduce a component that the SAD does not have; if one is missing from the SAD, raise `OQ-xxx`.
+
+## 5. Output contract
+
+- Write to `BLUEPRINT_OUTPUT_PATH`; a chat-only answer is not an artifact.
+- Write in `OUTPUT_LANGUAGE`, keeping IDs, element names and standard terms in English.
+- Begin with document control: system name, version, date, owner, approvers and the prompt version used
+  (`design/bluePrint_design_prompt.md` v2.0).
+- Follow the section order of §7 unchanged, including the view order.
+- End with a concern-to-element traceability table and the `OQ-xxx` list with owners and dates.
+
+## 6. Self-check and stop conditions
+
+Score the result row by row against `design/BluePrint_Design_IEEE_1016_2009_Checklist.xlsx` before delivering, and report the score with
+the artifact. Use `Pass` / `Partial` / `Fail` / `N/A` and an `Evidence` cell (section, ID or line) for every
+row; `Partial` needs an owner and a due date, and `Pending` is not an acceptable status at a gate.
+
+- [ ] Every stakeholder concern is addressed by at least one design view.
+- [ ] All eight IEEE 1016 views in §7.3 are present and consistent with each other.
+- [ ] Every design element traces to a requirement or a concern; no orphan element.
+- [ ] Quality-attribute scenarios carry a measurable response.
+- [ ] No placeholder remains, and no element contradicts the SAD.
+
+Stop and ask — never guess — when:
+
+- any `<...>` placeholder in §2.2 is still unfilled;
+- a required input in §2.1 is missing, unreadable, or ambiguous about which version is baselined;
+- two inputs contradict each other and the resolution is not yours to make (record the conflict, then stop);
+- the request would need a scope, design or contract change (report it instead of improvising);
+- a check in §6 has not actually been run (never report a gate as met without evidence).
+
 ---
 
-## 1. Context & Subject
+## 7. Detailed specification
 
-### 1.1 System Identification
+### 7.1 Context & Subject
+
+#### 1.1 System Identification
 
 | Attribute | Value |
 |-----------|-------|
@@ -16,8 +123,7 @@ You are a professional software developer, please generate a complete, standards
 | **Revision History** | [Version, Date, Author, Changes] |
 [Provide detail description of your system - or attach your SRS/PRD or/and SAD documents at here]
 
-
-### 1.2 System Scope and External Boundaries
+#### 1.2 System Scope and External Boundaries
 
 Define the **external boundaries** of the system—what is inside the architecture versus what exists outside.
 
@@ -30,7 +136,7 @@ Define the **external boundaries** of the system—what is inside the architectu
 | **Trust Boundaries** | [Identify security boundaries—internal network, DMZ, public internet, third-party domains] |
 | **Deployment Environment** | [e.g., AWS Cloud, On-premise, Hybrid, Edge Devices] |
 
-### 1.3 Assumptions and Constraints
+#### 1.3 Assumptions and Constraints
 
 | Type | Description |
 |------|-------------|
@@ -41,9 +147,9 @@ Define the **external boundaries** of the system—what is inside the architectu
 
 ---
 
-## 2. Stakeholders & Concerns
+### 7.2 Stakeholders & Concerns
 
-### 2.1 Stakeholder Identification
+#### 2.1 Stakeholder Identification
 
 Identify all stakeholders who have a vested interest in the system's design and operation.
 
@@ -57,7 +163,7 @@ Identify all stakeholders who have a vested interest in the system's design and 
 | [e.g., Security Officer] | [e.g., Compliance] | [e.g., Data protection, Authentication, Audit trails] |
 | [e.g., Data Scientist] | [e.g., AI/ML Team] | [e.g., Model accuracy, Data pipeline, Feature store] |
 
-### 2.2 Stakeholder Concerns (IEEE 1016-2009)
+#### 2.2 Stakeholder Concerns (IEEE 1016-2009)
 
 Map each stakeholder to their specific **concerns**—the non-functional requirements, quality attributes, and risks they care about.
 
@@ -65,7 +171,7 @@ Map each stakeholder to their specific **concerns**—the non-functional require
 |-------------|---------|-------------------------|---------------------|
 | [Stakeholder] | [Concern description] | [Priority] | [Measurable criterion] |
 
-### 2.3 Quality Attribute Scenarios
+#### 2.3 Quality Attribute Scenarios
 
 For critical quality attributes, define concrete, measurable scenarios using the **six-part scenario format** (Source, Stimulus, Artifact, Environment, Response, Response Measure).
 
@@ -80,7 +186,7 @@ For critical quality attributes, define concrete, measurable scenarios using the
 | **Deployability** | [e.g., Canary deployments with automated rollback on error rate >1%] |
 | **Observability** | [e.g., Distributed tracing, structured logging, and metrics exposed in Prometheus format] |
 
-### 2.4 UX/UI Quality Attribute Scenarios
+#### 2.4 UX/UI Quality Attribute Scenarios
 
 Define concrete, measurable UX/UI quality scenarios.
 
@@ -97,7 +203,7 @@ Define concrete, measurable UX/UI quality scenarios.
 | **Internationalization** | [e.g., UI supports RTL languages, text expansion (+30%), and date/time localization] |
 | **Mobile Experience** | [e.g., Touch targets minimum 44px, gestures (swipe, pinch) optimized] |
 
-### 2.5 UX/UI Constraints Matrix
+#### 2.5 UX/UI Constraints Matrix
 
 | UX/UI Constraint | Requirement | Tool/Standard | Verification Method |
 |------------------|-------------|---------------|---------------------|
@@ -111,13 +217,13 @@ Define concrete, measurable UX/UI quality scenarios.
 | **Help & Onboarding** | [e.g., Contextual help available] | [UX best practice] | [Task completion metrics] |
 ---
 
-## 3. Design Views (IEEE 1016-2009 Core)
+### 7.3 Design Views (IEEE 1016-2009 Core)
 
 The design is documented through **eight distinct views**, each addressing specific stakeholder concerns. Every view must be explicitly linked back to the concerns identified in Section 2.
 
 ---
 
-### 3.1 Composition View
+#### 3.1 Composition View
 
 **Purpose:** Describes how the system is assembled from smaller units. Shows the hierarchical decomposition of the software into modules, subsystems, and packages.
 
@@ -140,14 +246,14 @@ flowchart TD
 
     SubsystemA --> ModuleA1[Domain Entities]
     SubsystemA --> ModuleA2[Business Logic]
-    
+
     SubsystemB --> ModuleB1[Logging]
     SubsystemB --> ModuleB2[Configuration]
     SubsystemB --> ModuleB3[Security]
-    
+
     SubsystemC --> ModuleC1[REST Controllers]
     SubsystemC --> ModuleC2[GraphQL Resolvers]
-    
+
     SubsystemD --> ModuleD1[Repository Layer]
     SubsystemD --> ModuleD2[Cache Manager]
 ```

@@ -5,7 +5,6 @@
 > Spec → Generate → Verify → Refine
 >
 
-
 ---
 
 ## 1. Tổng quan Agentic SDLC
@@ -141,7 +140,7 @@
 
 - **L0 — CI tự động:** lint, type, test, coverage ≥70%, secret scan, build < 10 min
 - **L1 — Agent review:** review theo rubric, trích dẫn dòng lỗi, chạy trên diff, không có quyền merge
-- **Test plan:** dùng `verification/testPlan_prompt.md` + `verification/Test_Plan_IEEE_829_Checklist.xlsx`
+- **Test plan:** dùng `verification/TestPlan_IEEE 829-2008_prompt.md` + `verification/Test_Plan_IEEE_829_Checklist.xlsx`
 - **Code review checklist:** `verification/Code_Review_IEEE_1028_Checklist.xlsx`
 
 ### ✅ Code Review (Phase 8)
@@ -202,7 +201,7 @@
 | **4. Design** | `docs/04-design/` | `SAD.md` → `ADR-*.md` → `diagrams/` → `blueprint.md` → `openapi.md` → `database-design.md` → `UI_UX_design/` | IEEE 1016 · ISO 42010 · UML 2.0 · 4+1 · C4 | Architect + Tech Lead |
 | **5. Planning** | `docs/05-development/` | `Software_Development_Plan.md` → `WBS.md` → `tasks/*.md` | ISO/IEC/IEEE 24748-5 · ISO 21511 · `development/DevPlan_ISO_24748_5_Prompt.md` · `development/TaskBreakdown_ISO_21511_Prompt.md` | PM/PO + Tech Lead |
 | **6. Build** | code trong repo; bản ghi ở PR/work item | `AGENTS.md` → `app/` → `tests/` → `traceability.md ↻` | ISO 25010 · Conventional Commits | Human owner |
-| **7. Verify** | `docs/07-verification/` | `test-report` → `CI log` → `coverage` | IEEE 829 · IEEE 29119 · `verification/testPlan_prompt.md` | QA + Reviewer |
+| **7. Verify** | `docs/07-verification/` | `test-report` → `CI log` → `coverage` | IEEE 829 · IEEE 29119 · `verification/TestPlan_IEEE 829-2008_prompt.md` | QA + Reviewer |
 | **8. Review** | bản ghi ở PR/work item | `PR + review record` → `approval` | IEEE 1028 · `verification/Code_Review_IEEE_1028_Checklist.xlsx` | Reviewer ≠ Author |
 | **9–11. Release→Op→Retire** | `docs/09-release/`, `docs/10-operations/`, `docs/11-decommissioning/` | `release record` → `runbooks` → `incident record` → `decommission record` | ISO 12207 · ISO 9001 | Release owner |
 
@@ -218,7 +217,8 @@
 - `analysis/BRD_IEEE_29148_Checklist.xlsx`, `analysis/PRD_IEEE_29148_Checklist.xlsx` — IEEE 29148 checklists
 - `design/` — SAD, Blueprint, UML, API, DB, UI/UX prompts + checklists
 - `development/DevPlan_ISO_24748_5_Prompt.md`, `development/DevPlan_ISO_24748_5_Checklist.xlsx` — SDP prompt + ISO/IEC/IEEE 24748-5 checklist
-- `verification/testPlan_prompt.md`, `verification/Test_Plan_IEEE_829_Checklist.xlsx`, `verification/Code_Review_IEEE_1028_Checklist.xlsx` — Test plan prompt + IEEE 829 checklist, Code review checklist IEEE 1028
+- `verification/TestPlan_IEEE 829-2008_prompt.md`, `verification/TestCase_RTM_IEEE_829_Prompt.md`, `verification/TestReport_IEEE_829_Prompt.md`, `verification/Test_Plan_IEEE_829_Checklist.xlsx`, `verification/Code_Review_IEEE_1028_Prompt.md`, `verification/Code_Review_IEEE_1028_Checklist.xlsx` — test plan, cases and RTM, test report prompts + IEEE 829 checklist; code review prompt + IEEE 1028 checklist
+- `requirements/Intake_Intent_Prompt.md`, `design/Design_Audit_Prompt.md`, `development/Implementation_Task_Prompt.md` — intake, cross-artifact design audit and implementation prompts
 - `AI_SDLC-SOP.md` — Quy trình SOP đầy đủ
 - `agentic-sdlc-process.md` — Tài liệu này
 

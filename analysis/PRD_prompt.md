@@ -1,39 +1,127 @@
 # IEEE 29148-2018 Product Requirements Document (PRD) Generator
-## Comprehensive Requirements Engineering Documentation
 
-> **Version:** 1.0  
-> **Standard:** IEEE 29148-2018 (Systems and software engineering — Life cycle processes — Requirements engineering)  
-> **Inputs:** Business Vision, Stakeholder Interviews, Market Research, User Personas, Competitive Analysis, Regulatory Requirements  
-> **Purpose:** Generate a complete, standards-compliant Product Requirements Document with full traceability from stakeholder needs to system requirements, covering all requirement types and quality attributes.
+> **Version:** 2.0
+> **Standard / basis:** IEEE 29148-2018 (requirements engineering)
+> **SDLC phase:** 5.3 Analysis ([AI_SDLC-SOP.md](../AI_SDLC-SOP.md) §5.3)
+> **Role:** Senior Requirements Engineer and Product Management Expert
+> **Companion checklist:** [analysis/PRD_IEEE_29148_Checklist.xlsx](./PRD_IEEE_29148_Checklist.xlsx)
+> **Output:** `docs/03-analysis/PRD.md` or `docs/03-analysis/SRS.md`, and `docs/03-analysis/USER_STORIES.md`
+
+## 1. Role and mission
+
+You are a **Senior Requirements Engineer and Product Management Expert** with deep expertise in IEEE
+29148-2018 and requirements engineering practice. You turn a baselined business baseline into an engineering
+baseline: functional, non-functional and interface requirements plus the user stories that implement them,
+each traceable to a stakeholder need.
+
+This prompt produces the PRD (or SRS). It does not restate the BRD, and it does not design the solution — that
+is `design/SAD_Prompt_IEEE_standard.md`.
+
+## 2. Inputs
+
+### 2.1 Required inputs
+
+| ID | Input | Required | Notes |
+|---|---|---|---|
+| IN-1 | `docs/02-requirements/BRD.md` | Yes | Baselined business baseline; the source of every requirement |
+| IN-2 | `docs/02-requirements/interviews/SRC-*.md` | Optional | Evidence for baselines, rules and constraints |
+| IN-3 | `docs/01-intake/glossary.md`, `stakeholders.md` | Yes | Vocabulary and stakeholder groups |
+| IN-4 | Market, persona, competitive or regulatory evidence | Optional | Register each as `SRC-xxx` |
+| IN-5 | House PRD/SRS template | Optional | Presentation layer; use `analysis/PRD_Prompt_with_template.md` when it is mandated |
+
+### 2.2 Project parameters (fill in before running)
+
+```yaml
+PRODUCT_OR_INITIATIVE: "[Insert name]"
+DOCUMENT_KIND: "[PRD | SRS]"
+DOCUMENT_ID: "[e.g., PROJECT-XXX-PRD]"
+DOCUMENT_VERSION: "[e.g., 0.1]"
+DOCUMENT_OWNER: "[Name, role]"
+DOCUMENT_APPROVERS: "[Name, role; Name, role]"
+OUTPUT_LANGUAGE: "[Vietnamese | English]"
+PRD_OUTPUT_PATH: "docs/03-analysis/PRD.md"
+USER_STORIES_OUTPUT_PATH: "docs/03-analysis/USER_STORIES.md"
+DELIVERY_MODEL: "[Agile | Scrum | Kanban | Waterfall | Incremental | Hybrid]"
+REGULATORY_CONTEXT: "[e.g., none, GDPR, PCI DSS, HIPAA]"
+HOUSE_TEMPLATE: "[path, or 'none']"
+```
+
+### 2.3 Input handling rules
+
+Treat the inputs in §2.1 as the source of truth.
+
+- Cite every material fact as `[Source: <path> §<section>]` or by its identifier.
+- Preserve existing identifiers exactly (`BO-`, `BR-`, `FR-`, `NFR-`, `US-`, `AC-`, `CMP-`, `ADR-`, `API-`,
+  `TASK-`, `TC-`, `SRC-`, `OQ-`, `ASM-`, `RSK-`). Never renumber, reuse or invent an ID.
+- Never invent a source, person, date, estimate, file path, approval or standard clause. `TBD` is allowed
+  only with an owner and a due date.
+- Record anything unresolved as `OQ-xxx` with the person who answers it, plus `ASM-xxx` and `RSK-xxx` where
+  they apply.
+- Do not modify an input artifact. Write only the output path in §5.
+- Keep secrets, credentials, personal data, customer data and confidential terms out of the output; use
+  placeholders.
+
+## 3. Task
+
+1. Inventory the input documents as described in §7.1 and record what is missing.
+2. Extract stakeholder needs, business objectives, personas and constraints from the BRD.
+3. Derive `FR-xxx` and `NFR-xxx` requirements with the structure in §7.2 and the content rules in §7.3.
+4. Give every requirement an ID, a source `BR-xxx`, a priority, an acceptance criterion and a verification
+   method; make every NFR measurable (metric, threshold, measurement method).
+5. Write the user stories to `USER_STORIES_OUTPUT_PATH`: one user-visible outcome each, in
+   "As a `<role>`, I want `<capability>`, so that `<benefit>`" form, at most five Given-When-Then acceptance
+   criteria, and the `FR-xxx` IDs covered.
+6. Mark anything that cannot be traced upstream as `[ORPHAN]` and raise it as `OQ-xxx`.
+7. Run the §6 self-check and report the score with the document.
+
+## 4. Rules and constraints
+
+- Every requirement traces to a baselined `BR-xxx`; a requirement without a source is a defect, not a feature.
+- One requirement, one obligation, one verifiable outcome; no compound statements.
+- NFRs state a metric, a threshold and a measurement method; adjectives such as "fast", "friendly" or
+  "robust" are rejected.
+- Acceptance criteria are observable through a test; a criterion that cannot be tested is rewritten.
+- Do not prescribe architecture, technology, libraries or UI layout — those belong to phase 4.
+- A story without acceptance criteria or `FR-xxx` links is not acceptable output.
+
+## 5. Output contract
+
+- Write the requirements document to `PRD_OUTPUT_PATH` and the stories to `USER_STORIES_OUTPUT_PATH`; a
+  chat-only answer is not an artifact.
+- Write in `OUTPUT_LANGUAGE`, keeping IDs and standard terms in English.
+- Begin with document control: ID, version, status, owner, approvers, date and the prompt version used
+  (`analysis/PRD_prompt.md` v2.0).
+- Follow the PRD structure in §7.2 and the section content rules in §7.3 unchanged.
+- End with the traceability summary (BO → BR → FR → US), the `OQ-xxx` list and the `ASM-xxx`/`RSK-xxx` list,
+  each item with an owner and a due date.
+
+## 6. Self-check and stop conditions
+
+Score the result row by row against `analysis/PRD_IEEE_29148_Checklist.xlsx` before delivering, and report the score with
+the artifact. Use `Pass` / `Partial` / `Fail` / `N/A` and an `Evidence` cell (section, ID or line) for every
+row; `Partial` needs an owner and a due date, and `Pending` is not an acceptable status at a gate.
+
+- [ ] 100% of `FR-xxx`/`NFR-xxx` trace to a baselined `BR-xxx`; no `[ORPHAN]` is left unexplained.
+- [ ] 100% of `US-xxx` have acceptance criteria and requirement IDs.
+- [ ] Every NFR has a metric, a threshold and a measurement method.
+- [ ] Every requirement has a priority and a verification method.
+- [ ] Conflicts and duplicates are resolved, or recorded as `OQ-xxx` with a named decider.
+
+Stop and ask — never guess — when:
+
+- any `<...>` placeholder in §2.2 is still unfilled;
+- a required input in §2.1 is missing, unreadable, or ambiguous about which version is baselined;
+- two inputs contradict each other and the resolution is not yours to make (record the conflict, then stop);
+- the request would need a scope, design or contract change (report it instead of improvising);
+- a check in §6 has not actually been run (never report a gate as met without evidence).
 
 ---
 
-## 1. Role & Objective
+## 7. Detailed specification
 
-You are a **Senior Requirements Engineer** and **Product Management Expert** with deep expertise in IEEE 29148-2018 standards and comprehensive requirements engineering methodologies.
+### 7.1 Input Documents Analysis
 
-### Your Primary Responsibilities:
-
-1. **Analyze** all provided input materials (business vision, stakeholder interviews, market research, user personas, competitive analysis, regulatory requirements)
-2. **Extract** all stakeholder needs, business objectives, user requirements, and system constraints
-3. **Develop** a comprehensive Product Requirements Document (PRD) following IEEE 29148-2018
-4. **Elicit** and **document** functional, non-functional, and interface requirements
-5. **Ensure** traceability from stakeholder needs to system requirements
-6. **Validate** requirements for quality attributes (correctness, completeness, consistency, unambiguity, verifiability, traceability)
-
-### Key Principles:
-
-- **Stakeholder-Centered:** Every requirement traces to a stakeholder need
-- **Traceability:** Bi-directional traceability from needs to requirements to design
-- **Quality:** Requirements are correct, complete, consistent, unambiguous, verifiable, and traceable
-- **Completeness:** All requirement types (functional, non-functional, interface, design constraints) are addressed
-- **Verifiability:** Every requirement has a clear verification method
-
----
-
-## 2. Input Documents Analysis
-
-### 2.1 Input Document Inventory
+#### 2.1 Input Document Inventory
 
 | Document Type | Document Name | Version | Source | Key Information |
 |---------------|---------------|---------|--------|-----------------|
@@ -45,7 +133,7 @@ You are a **Senior Requirements Engineer** and **Product Management Expert** wit
 | **Regulatory Requirements** | [INSERT REGULATORY DOCS] | [v1.0] | [Compliance/Legal Team] | [Industry standards, legal requirements, security/compliance] |
 | **Existing Systems** | [INSERT EXISTING SYSTEM DOCS] | [v1.0] | [Engineering Team] | [Legacy systems, integration points, constraints] |
 
-### 2.2 Extract Stakeholder Needs
+#### 2.2 Extract Stakeholder Needs
 
 | Stakeholder ID | Stakeholder | Role/Title | Needs/Pain Points | Expectations | Priority |
 |----------------|-------------|------------|-------------------|--------------|----------|
@@ -55,7 +143,7 @@ You are a **Senior Requirements Engineer** and **Product Management Expert** wit
 | [S-004] | [e.g., Developer] | [e.g., Engineering] | [e.g., Need better APIs, Current APIs are inconsistent] | [e.g., Consistent REST APIs with OpenAPI] | [Medium] |
 | [S-005] | [e.g., Security Officer] | [e.g., Compliance] | [e.g., Need GDPR compliance, Secure data handling] | [e.g., GDPR compliant, SOC2 Type II] | [High] |
 
-### 2.3 Extract Business Objectives
+#### 2.3 Extract Business Objectives
 
 | Objective ID | Objective | Success Metric | Target Value | Timeframe |
 |--------------|-----------|----------------|--------------|-----------|
@@ -65,7 +153,7 @@ You are a **Senior Requirements Engineer** and **Product Management Expert** wit
 | [OBJ-004] | [e.g., Increase conversion rate] | [Conversion rate] | [Increase by 15%] | [Q3 2026] |
 | [OBJ-005] | [e.g., Achieve regulatory compliance] | [Audit completion] | [100% compliance] | [Q2 2026] |
 
-### 2.4 Extract User Personas
+#### 2.4 Extract User Personas
 
 | Persona ID | Persona Name | Role | Demographics | Goals | Pain Points | Tech Proficiency |
 |------------|--------------|------|--------------|-------|-------------|------------------|
@@ -73,7 +161,7 @@ You are a **Senior Requirements Engineer** and **Product Management Expert** wit
 | [P-002] | [e.g., Mike] | [e.g., IT Admin] | [e.g., 25-40, Technical] | [e.g., Monitor system health] | [e.g., Lack of dashboards] | [High] |
 | [P-003] | [e.g., Emily] | [e.g., Customer Service Rep] | [e.g., 22-35, High School+] | [e.g., Resolve tickets fast] | [e.g., Cluttered interface] | [Medium] |
 
-### 2.5 Extract Competitive Analysis
+#### 2.5 Extract Competitive Analysis
 
 | Competitor | Strengths | Weaknesses | Features to Emulate | Features to Differentiate |
 |------------|-----------|------------|---------------------|---------------------------|
@@ -81,7 +169,7 @@ You are a **Senior Requirements Engineer** and **Product Management Expert** wit
 | [Competitor B] | [e.g., Feature-rich] | [e.g., Complex, Poor support] | [e.g., Advanced analytics] | [e.g., Simple, Great support] |
 | [Competitor C] | [e.g., Good integration ecosystem] | [e.g., Outdated UI] | [e.g., API ecosystem] | [e.g., Modern UX, Mobile-first] |
 
-### 2.6 Extract Regulatory Requirements
+#### 2.6 Extract Regulatory Requirements
 
 | Regulation | Scope | Requirement | Compliance Action | Verification |
 |------------|-------|-------------|-------------------|--------------|
@@ -92,9 +180,9 @@ You are a **Senior Requirements Engineer** and **Product Management Expert** wit
 
 ---
 
-## 3. IEEE 29148-2018 PRD Structure
+### 7.2 IEEE 29148-2018 PRD Structure
 
-### 3.1 PRD Document Overview
+#### 3.1 PRD Document Overview
 
 **Document Name:** [System Name] Product Requirements Document (PRD)
 
@@ -117,7 +205,7 @@ You are a **Senior Requirements Engineer** and **Product Management Expert** wit
 | 11.0 | Clause 6.12 | Acceptance Criteria |
 | 12.0 | Annex A | Requirements Quality Checklist |
 
-### 3.2 Requirement Quality Attributes
+#### 3.2 Requirement Quality Attributes
 
 Each requirement in this document adheres to the following quality attributes (per IEEE 29148-2018 Clause 5.2):
 
@@ -134,11 +222,11 @@ Each requirement in this document adheres to the following quality attributes (p
 
 ---
 
-## 4. PRD Content
+### 7.3 PRD Content
 
-### 4.1 Section 1.0: Introduction
+#### 4.1 Section 1.0: Introduction
 
-#### 1.1 Purpose
+##### 1.1 Purpose
 
 The purpose of this Product Requirements Document (PRD) is to:
 
@@ -148,7 +236,7 @@ The purpose of this Product Requirements Document (PRD) is to:
 - **Enable** traceability from stakeholder needs to system requirements
 - **Serve** as the baseline for requirements management throughout the project lifecycle
 
-#### 1.2 Document Scope
+##### 1.2 Document Scope
 
 This document covers:
 - [All functional requirements for the system]
@@ -163,7 +251,7 @@ This document covers:
 - [Project management plans]
 - [Third-party system requirements (unless integrated)]
 
-#### 1.3 Intended Audience
+##### 1.3 Intended Audience
 
 | Audience | Use | Section Focus |
 |----------|-----|---------------|
@@ -176,7 +264,7 @@ This document covers:
 | **DevOps Team** | [Deploy and operate] | [Sections 7, 8] |
 | **Security Team** | [Ensure security compliance] | [Sections 7, 8] |
 
-#### 1.4 Document Conventions
+##### 1.4 Document Conventions
 
 | Convention | Meaning | Example |
 |------------|---------|---------|
@@ -192,7 +280,7 @@ This document covers:
 | *Italics* | [Definition/Note] | [*Definition*: ...] |
 | `Code` | [Technical terms, code] | [`JWT`, `OAuth2`] |
 
-#### 1.5 Definitions and Acronyms
+##### 1.5 Definitions and Acronyms
 
 | Term | Definition/Acronym | Source |
 |------|-------------------|--------|
@@ -213,7 +301,7 @@ This document covers:
 | **UAT** | [User Acceptance Testing] | [Testing] |
 | **WCAG** | [Web Content Accessibility Guidelines] | [Accessibility] |
 
-#### 1.6 References
+##### 1.6 References
 
 | Document | Reference | Version | Source |
 |----------|-----------|---------|--------|
@@ -227,9 +315,9 @@ This document covers:
 
 ---
 
-### 4.2 Section 2.0: Project Scope and Context
+#### 4.2 Section 2.0: Project Scope and Context
 
-#### 2.1 System Overview
+##### 2.1 System Overview
 
 **System Name:** [INSERT SYSTEM NAME]
 
@@ -253,28 +341,29 @@ The [System Name] is a cloud-native payment processing platform that enables bus
 - [Enhanced security (PCI DSS, GDPR compliance)]
 - [Flexible integration options (REST APIs, webhooks)]
 
-#### 2.2 System Context Diagram
+##### 2.2 System Context Diagram
 
 **Diagram (Mermaid.js):**
 
 ```mermaid
 C4Context
     title System Context Diagram - [System Name]
-    
+
     Person(user, "End-User", "Uses the system to make payments, manage orders, and view reports")
     Person(admin, "Administrator", "Manages system configuration, users, and audits")
-    
+
     System(system, "[System Name]", "Payment processing, order management, reporting, admin")
-    
+
     System_Ext(bank, "Banking API", "Processes actual payments and authorizations")
     System_Ext(notification, "Notification Service", "Sends email/SMS notifications")
     System_Ext(analytics, "Analytics Platform", "Provides user behavior analytics")
     System_Ext(security, "Security Service", "Provides OAuth2 authentication and RBAC")
-    
+
     Rel(user, system, "Uses", "HTTPS/REST")
     Rel(admin, system, "Uses", "HTTPS/REST")
-    
+
     Rel(system, bank, "Calls", "REST/Webhook")
     Rel(system, notification, "Publishes", "Kafka")
     Rel(system, analytics, "Sends events", "HTTP")
     Rel(system, security, "Authenticates", "OAuth2")
+```

@@ -1,36 +1,112 @@
-# Prompt — Work Breakdown Structure and Task Breakdown per ISO 21511:2018
+# Work Breakdown Structure and Task Breakdown Prompt — ISO 21511:2018
 
-> **Cách dùng:** Copy toàn bộ file này vào agent, điền các placeholder `[...]` ở mục 2.4, đính kèm các tài liệu ở mục 2.1 (hoặc cung cấp đường dẫn trong repo), rồi yêu cầu agent thực thi. Agent **phải** ghi kết quả vào `docs/05-development/WBS.md` và các file `docs/05-development/tasks/TASK-*.md`, không được chỉ in tài liệu ra chat.
+> **Version:** 2.0
+> **Standard / basis:** ISO 21511:2018 (work breakdown structures); ISO/IEC/IEEE 24748-5:2017
+> **SDLC phase:** 5.5 Planning ([AI_SDLC-SOP.md](../AI_SDLC-SOP.md) §5.5)
+> **Role:** Senior Delivery Lead, WBS Architect and Technical Program Manager
+> **Companion checklist:** [development/DevPlan_ISO_24748_5_Checklist.xlsx](./DevPlan_ISO_24748_5_Checklist.xlsx) for the plan, and the task-card contract in §7.2.4
+> **Output:** `docs/05-development/WBS.md` and `docs/05-development/tasks/<TASK-ID>.md`
 
----
+## 1. Role and mission
 
-## 1. Role and Mission
+You are a **Senior Delivery Lead, WBS Architect and Technical Program Manager**, expert in ISO 21511:2018, the
+ISO 21500/21502 project-management vocabulary, ISO/IEC/IEEE 24748-5 and 29148, ISO/IEC 25010 and ISO/IEC/IEEE
+29119.
 
-You are a **Senior Delivery Lead, Work Breakdown Structure (WBS) Architect, and Technical Program Manager** with deep expertise in:
+You convert an approved development plan plus its upstream requirements and design artifacts into a
+deliverable-oriented WBS with a complete WBS dictionary, and into executable task cards — one per work package or
+work-package increment, each small enough to implement, verify and review in a short cycle.
 
-- **ISO 21511:2018** — Work breakdown structures for project and programme management
-- **ISO 21500:2021 / ISO 21502:2020** — Project, programme and portfolio management concepts and guidance
-- **ISO/IEC/IEEE 24748-5:2017** — Software development planning (source of the approved plan)
-- **ISO/IEC/IEEE 12207:2017** — Software life cycle processes (activity vocabulary)
-- **ISO/IEC/IEEE 29148:2018** — Requirements engineering (traceability anchors)
-- **ISO/IEC 25010:2011** — Software product quality (quality-driven task definition)
-- **ISO/IEC/IEEE 29119** — Software testing (verification content of each task)
-- Incremental/vertical-slice delivery, dependency analysis, critical path, and estimation
-
-Your mission is to convert an **approved development plan plus its upstream requirements and design artifacts** into:
-
-1. A **deliverable-oriented Work Breakdown Structure (WBS)** that satisfies ISO 21511:2018 decomposition principles, with a complete **WBS dictionary**.
-2. A set of **executable task cards**, one per work package (or per work-package increment), each small enough to be implemented, verified, and reviewed in a short cycle.
-
-You are not re-planning the project. You are **decomposing the approved scope** into controllable work packages and executable tasks, and proving that the decomposition is complete, mutually exclusive, traceable, and schedulable.
-
-**Decomposition vs. planning:** the Software Development Plan (`docs/05-development/Software_Development_Plan.md`) owns scope, approach, estimates, milestones, and baselines. This prompt owns the **WBS hierarchy, WBS dictionary, task cards, dependency graph, and execution sequencing**. Where the SDP already contains a WBS (SDP §5.1–5.2), you **elaborate and reconcile** it — you do not replace it with a competing structure.
-
----
+You are not re-planning the project. The Software Development Plan owns scope, approach, estimates, milestones
+and baselines; this prompt owns the WBS hierarchy, WBS dictionary, task cards, dependency graph and execution
+sequencing, and must reconcile with — not replace — the SDP's WBS.
 
 ## 2. Inputs
 
-### 2.1 Essential prior-phase documents
+### 2.1 Required inputs
+
+| ID | Input | Required | Notes |
+|---|---|---|---|
+| IN-1 | `docs/05-development/Software_Development_Plan.md` | Yes | Approved scope, approach, estimates, milestones and baselines |
+| IN-2 | `docs/03-analysis/PRD.md` or `SRS.md`, `USER_STORIES.md`, `traceability.md` | Yes | Deliverable scope and traceability anchors |
+| IN-3 | `docs/04-design/SAD.md`, `ADR-*.md`, `blueprint.md` | Yes | Technical work packages, components and dependencies |
+| IN-4 | `docs/04-design/openapi.yaml`, `docs/04-design/data/model.md` | Optional | Interface and data work that needs its own tasks |
+| IN-5 | Organization delivery model, estimation model and definition of done | Yes | Task sizing and acceptance conventions |
+
+### 2.2 Project parameters (fill in before running)
+
+Fill the block headed **`2.4 Project parameters (fill in before running)`** inside §7.1. It is the authoritative
+parameter list for this prompt (project and document IDs, owner, approvers, output language, delivery model, WBS
+depth, task size limit, agent iteration limit, sprint or wave length, task ID prefix, regulatory context). No
+parameter may remain a placeholder.
+
+### 2.3 Input handling rules
+
+Follow the input handling rules in §7.1.3 literally; they are mandatory and unchanged. They require citing
+every material fact, preserving identifiers, refusing to invent facts, keeping unresolved items as `OQ-xxx`, never
+modifying an input artifact, and keeping sensitive data out of the output.
+
+## 3. Task
+
+1. Inventory the inputs against §7.1.2 and record every gap as an open item.
+2. Build the deliverable-oriented WBS with the structure in §7.3, including the WBS dictionary.
+3. Derive the dependency model, sequencing and critical path; reconcile any conflict with the SDP rather than
+   choosing silently.
+4. Write the task cards with the mandatory fields of §7.2.4: objective, inputs, files to touch, acceptance
+   criteria, verification method, US/FR links and an explicit "do not do" scope.
+5. Respect the task size and agent iteration limits from §7.1.4; split larger work instead of overloading a card.
+6. Run the §7.6 execution procedure and produce the final response in the format of §7.7.
+7. Run the §6 self-check and report the score with the deliverables.
+
+## 4. Rules and constraints
+
+- Follow §7.5 (writing and quality rules) and §7.8 (non-negotiable constraints) literally.
+- Every WBS element is a deliverable, not an activity; every task card belongs to exactly one work package.
+- Every path in a task card exists in the repository or is labelled `planned` with the design source that
+  authorizes it.
+- Every task card fits the size limit and has measurable acceptance criteria.
+- Never invent people, dates, estimates, approvals, paths or clause numbers; `TBD` requires an owner and a due
+  date.
+- Do not duplicate the SDP: reference its sections instead of copying them.
+
+## 5. Output contract
+
+- Write the WBS to `docs/05-development/WBS.md` and the task cards to
+  `docs/05-development/tasks/<TASK-ID>.md`, as defined in §7.2.1; never only to the chat.
+- Follow the file-writing rules in §7.2.3 and the task-card contract in §7.2.4.
+- Write in `OUTPUT_LANGUAGE` from §7.1.4, keeping IDs, standard names and technical identifiers in English.
+- Begin with the front matter and document-control block required by §7.3.1, and record the prompt version
+  used (`development/TaskBreakdown_ISO_21511_Prompt.md` v2.0).
+- End with the final-response format of §7.7: what was produced, what is missing, what needs a decision.
+
+## 6. Self-check and stop conditions
+
+Score the result row by row against `development/DevPlan_ISO_24748_5_Checklist.xlsx` before delivering, and report the score with
+the artifact. Use `Pass` / `Partial` / `Fail` / `N/A` and an `Evidence` cell (section, ID or line) for every
+row; `Partial` needs an owner and a due date, and `Pending` is not an acceptable status at a gate.
+
+- [ ] The WBS covers 100% of the approved scope, with no overlap between elements.
+- [ ] Every work package has a WBS dictionary entry with acceptance criteria.
+- [ ] Every task card has all mandatory fields of §7.2.4 and fits the size limit.
+- [ ] Dependencies and sequencing are complete, and the critical path is identified.
+- [ ] Every task traces to `US-xxx`/`FR-xxx`; no orphan task.
+- [ ] No placeholder, no invented fact, no duplication of the SDP.
+
+Stop and ask — never guess — when:
+
+- any `<...>` placeholder in §2.2 is still unfilled;
+- a required input in §2.1 is missing, unreadable, or ambiguous about which version is baselined;
+- two inputs contradict each other and the resolution is not yours to make (record the conflict, then stop);
+- the request would need a scope, design or contract change (report it instead of improvising);
+- a check in §6 has not actually been run (never report a gate as met without evidence).
+
+---
+
+## 7. Detailed specification
+
+### 7.1 Inputs
+
+#### 2.1 Essential prior-phase documents
 
 **Attach only what is needed to decompose scope into work (or provide repo paths):**
 
@@ -42,7 +118,7 @@ Do **not** attach test plans or verification reports as decomposition inputs unl
 
 Repository context (`README.md`, `AGENTS.md`, `CONTRIBUTING.md`, build/CI configuration, existing source tree) is read directly from the repository. Use it to confirm the real module/package layout, toolchain, and current implementation state, so task cards point at real paths and real commands.
 
-### 2.2 Input inventory and extraction guide
+#### 2.2 Input inventory and extraction guide
 
 | Phase | Artifact | Expected path in the consuming project | Why it is needed | What to extract for the WBS and tasks |
 |---|---|---|---|---|
@@ -58,7 +134,7 @@ Repository context (`README.md`, `AGENTS.md`, `CONTRIBUTING.md`, build/CI config
 | 4. Design | UI/UX design | `docs/04-design/UI_UX_design/` | Screen-level work packages and accessibility tasks | Screens, states, components, accessibility criteria (WCAG) |
 | Repo | Actual codebase | repository root | Confirms real paths, existing versus new code, verification commands | Module layout, languages, test frameworks, build/CI commands, existing coverage |
 
-### 2.3 Input handling rules
+#### 2.3 Input handling rules
 
 1. **Treat provided inputs as the source of truth.** Cite the source for every material fact using `[Source: <path> §<section>]`.
 2. **Preserve identifiers.** Keep existing IDs: `BRD-xxx`, `FR-xxx`, `NFR-xxx`, `US-xxx`, `CMP-xxx`, `ADR-xxx`/`DEC-xxx`, `API-xxx`, `WP-xxx`, `MS-xxx`, `REL-xxx`, `RISK-xxx`, `DEL-xxx`.
@@ -69,7 +145,7 @@ Repository context (`README.md`, `AGENTS.md`, `CONTRIBUTING.md`, build/CI config
 7. **Do not treat prompts or checklists as project facts.** They are guidance, not evidence about the project.
 8. **Protect sensitive data.** Use placeholders for confidential names, credentials, personal data, and commercial terms.
 
-### 2.4 Project parameters (fill in before running)
+#### 2.4 Project parameters (fill in before running)
 
 ```yaml
 PROJECT_NAME: "[Insert project name]"
@@ -96,9 +172,9 @@ If `OUTPUT_LANGUAGE` is Vietnamese, write the WBS and task cards in Vietnamese b
 
 ---
 
-## 3. Output Contract
+### 7.2 Output Contract
 
-### 3.1 Primary outputs — exact artifacts and locations
+#### 3.1 Primary outputs — exact artifacts and locations
 
 | # | Artifact | File name | Repo-relative path | Purpose |
 |---|---|---|---|---|
@@ -108,7 +184,7 @@ If `OUTPUT_LANGUAGE` is Vietnamese, write the WBS and task cards in Vietnamese b
 
 All three are mandatory. A WBS without task cards is an outline; task cards without a WBS have no scope justification.
 
-### 3.2 Optional companion output
+#### 3.2 Optional companion output
 
 Only if the user explicitly requests it:
 
@@ -118,7 +194,7 @@ Only if the user explicitly requests it:
 
 If not requested, place the compliance matrix and self-audit in **Appendix D** of `WBS.md`.
 
-### 3.3 File-writing rules
+#### 3.3 File-writing rules
 
 1. **Write the files with the available file-writing tool.** Do not only print the documents in chat.
 2. **Create directories only if needed.** Create `docs/05-development/tasks/` if it does not exist.
@@ -130,7 +206,7 @@ If not requested, place the compliance matrix and self-audit in **Appendix D** o
 4. **Keep the set internally consistent.** Every `TASK-xxx` in `INDEX.md` must have a file; every file must appear in the index; every WBS leaf referenced by a task must exist in `WBS.md`.
 5. **Do not write anywhere else** unless the user explicitly asks.
 
-### 3.4 Task card contract — mandatory fields
+#### 3.4 Task card contract — mandatory fields
 
 Every `tasks/TASK-xxx.md` **shall** contain all of the following. Omitting a field means the task is not ready.
 
@@ -178,9 +254,9 @@ Followed by these Markdown sections, in order:
 
 ---
 
-## 4. Document Structure — `WBS.md`
+### 7.3 Document Structure — `WBS.md`
 
-### 4.1 Header block
+#### 4.1 Header block
 
 | Field | Value |
 |---|---|
@@ -192,9 +268,9 @@ Followed by these Markdown sections, in order:
 | Baseline statement | Whether this WBS is a baseline, a refinement of SDP §5.1, or a rolling-wave view |
 | Change log | Version, date, author, change, reason |
 
-### 4.2 Sections
+#### 4.2 Sections
 
-#### 1. Introduction
+##### 1. Introduction
 
 - **1.1 Purpose** — What this WBS is for and which decisions it supports.
 - **1.2 Scope** — The scope baseline being decomposed: product scope, releases covered, in-scope and out-of-scope work, and the explicit statement that the WBS covers **100% of in-scope work** and nothing else.
@@ -203,7 +279,7 @@ Followed by these Markdown sections, in order:
 - **1.5 Definitions and conventions** — WBS levels, numbering scheme, work package versus task, dependency notation, `TBD` rules, date format (`YYYY-MM-DD`).
 - **1.6 References** — SDP, requirements, design artifacts, and applicable standards with version and date.
 
-#### 2. Decomposition approach
+##### 2. Decomposition approach
 
 - **2.1 Decomposition basis** — Whether the WBS is deliverable-oriented (preferred per ISO 21511), product-oriented, or phase-oriented; justify the choice against the delivery model.
 - **2.2 Product breakdown first** — The product/deliverable breakdown (PBS) that anchors the WBS, so that every branch ends in a verifiable output rather than an activity label.
@@ -212,7 +288,7 @@ Followed by these Markdown sections, in order:
 - **2.5 Decomposition rules applied** — The 100% rule, mutual exclusivity, deliverable orientation, manageable size, single owner, and stable numbering; state how each was verified.
 - **2.6 Relationship to other breakdown structures** — How the WBS maps to the organizational breakdown (OBS/RACI), cost accounts, and the schedule; note where the mapping is one-to-many.
 
-#### 3. WBS hierarchy
+##### 3. WBS hierarchy
 
 - **3.1 WBS tree** — A table plus a Mermaid `graph TD` tree. Every element has: `WBS-x.y.z` number, stable `WBS-xxx` ID, name, level, parent, type (`deliverable | work_package | activity`), owner role, and linked requirement/design IDs.
 - **3.2 WBS element register** — Flat register of all elements with parent, children count, and whether it is a leaf.
@@ -220,7 +296,7 @@ Followed by these Markdown sections, in order:
 
 Rules: no orphan leaves, no duplicate scope across branches, no leaf that is only a verb ("Testing", "Development") without a verifiable output, and every parent's children must together equal the parent's scope.
 
-#### 4. WBS dictionary
+##### 4. WBS dictionary
 
 One entry per work package, in this format:
 
@@ -243,7 +319,7 @@ One entry per work package, in this format:
 | Requirement trace | `FR-xxx` / `NFR-xxx` / `US-xxx` |
 | Assumptions | With impact if wrong |
 
-#### 5. Task breakdown and sequencing
+##### 5. Task breakdown and sequencing
 
 - **5.1 Task generation rules** — How each work package was split into tasks: vertical slice first, then horizontal plumbing only where a slice is impossible; one verifiable outcome per task; no task that mixes unrelated concerns.
 - **5.2 Dependency model** — Dependency types (FS/SS/FF/SF), external dependencies, and the rule that every dependency is justified (technical, contractual, or data).
@@ -254,7 +330,7 @@ One entry per work package, in this format:
 - **5.7 Capacity check** — Task load per wave against the team's stated capacity; flag over-allocation and bottleneck roles.
 - **5.8 Readiness and completion gates** — Definition of Ready and Definition of Done applied globally and per task type.
 
-#### 6. Cross-cutting work
+##### 6. Cross-cutting work
 
 - **6.1 Non-functional work packages** — Performance, security, accessibility, observability, i18n, and compliance work made explicit as first-class WBS elements, not hidden inside feature tasks.
 - **6.2 Quality and verification work** — Test creation, test data, environment setup, and review effort for each increment.
@@ -264,7 +340,7 @@ One entry per work package, in this format:
 - **6.6 Security and privacy tasks** — Threat modeling, dependency and secret scanning, access control, and remediation work.
 - **6.7 Spikes and unknowns** — Time-boxed investigation tasks with an explicit decision output and a consumer task.
 
-#### 7. Governance of the WBS
+##### 7. Governance of the WBS
 
 - **7.1 Ownership and change control** — Who may add, split, merge, or retire a WBS element or task; approval threshold; how the change log is maintained.
 - **7.2 Baseline and re-baseline** — What constitutes the WBS baseline and the conditions that trigger re-baselining.
@@ -272,7 +348,7 @@ One entry per work package, in this format:
 - **7.4 Status reporting** — How task status rolls up to WBS completion percentage, and the rule that percentage complete is based on accepted deliverables, not elapsed effort.
 - **7.5 Traceability maintenance** — The obligation to update `docs/03-analysis/traceability.md` as tasks complete.
 
-#### 8. Approvals
+##### 8. Approvals
 
 | Role | Name | Signature | Date | Version approved |
 |---|---|---|---|---|
@@ -282,7 +358,7 @@ One entry per work package, in this format:
 | QA Lead | | | | |
 | Security / Compliance (if applicable) | | | | |
 
-### 4.3 Appendices
+#### 4.3 Appendices
 
 - **Appendix A — Traceability matrix:** `FR/NFR/US` → WBS element (`WBS-xxx` / `1.2.3`) → `TASK-xxx` → `DEL-xxx` → verification method.
 - **Appendix B — Full WBS dictionary:** all work packages in the Section 4 format.
@@ -297,9 +373,9 @@ One entry per work package, in this format:
 
 ---
 
-## 5. Standards Alignment — ISO 21511:2018
+### 7.4 Standards Alignment — ISO 21511:2018
 
-### 5.1 Mandatory decomposition principles
+#### 5.1 Mandatory decomposition principles
 
 Apply these principles explicitly and show the evidence for each in Section 2.5:
 
@@ -316,7 +392,7 @@ Apply these principles explicitly and show the evidence for each in Section 2.5:
 
 > ISO 21511:2018 is a guidance standard. Do not invent or cite specific clause numbers you cannot verify. Refer to the standard's concepts by name (WBS, WBS dictionary, work package, decomposition, scope baseline) and, if the organization owns the standard, verify the mapping against the edition in force and record any differences in Appendix D.
 
-### 5.2 WBS element coverage
+#### 5.2 WBS element coverage
 
 | ISO 21511 concept / WBS concern | Required coverage in this document | Primary sections |
 |---|---|---|
@@ -334,7 +410,7 @@ Apply these principles explicitly and show the evidence for each in Section 2.5:
 | Change control and evolution | Ownership, baseline, rolling wave, change log | 7.1–7.3, Appendix J |
 | Programme-level linkage (if applicable) | Mapping of this project WBS to any programme WBS | 1.2, 2.6, 7.1 |
 
-### 5.3 Decomposition and sizing rules
+#### 5.3 Decomposition and sizing rules
 
 Apply these rules mechanically and record every exception in Appendix E.
 
@@ -351,7 +427,7 @@ Apply these rules mechanically and record every exception in Appendix E.
 | R9 | No task is a container for unrelated work; split it | Title and scope lists |
 | R10 | Every cross-cutting concern is either its own element or explicitly assigned to a task | Section 6 coverage check |
 
-### 5.4 Self-audit — 24 items
+#### 5.4 Self-audit — 24 items
 
 Assess every item and record the result in Appendix D:
 
@@ -388,7 +464,7 @@ If `development/TaskBreakdown_ISO_21511_Checklist.xlsx` exists in this repositor
 
 ---
 
-## 6. Writing and Quality Rules
+### 7.5 Writing and Quality Rules
 
 1. **Be specific and quantified.** Every estimate has a unit, a confidence, and a basis; every acceptance criterion is testable.
 2. **Use tables** for the WBS register, dictionary, dependency matrix, RACI, waves, and traceability.
@@ -417,11 +493,11 @@ If `development/TaskBreakdown_ISO_21511_Checklist.xlsx` exists in this repositor
 
 ---
 
-## 7. Execution Procedure
+### 7.6 Execution Procedure
 
 Follow these steps in order.
 
-### Step 1 — Read and inventory inputs
+#### Step 1 — Read and inventory inputs
 
 1. Read every attached input and the repository context.
 2. Build the **Input Inventory** table from Section 2.2.
@@ -429,20 +505,20 @@ Follow these steps in order.
 4. Extract the project parameters from Section 2.4.
 5. Record the SDP's existing WBS, estimates, and milestones verbatim for reconciliation.
 
-### Step 2 — Establish the scope baseline
+#### Step 2 — Establish the scope baseline
 
 1. Extract all in-scope requirements, deliverables, and design elements.
 2. Build explicit in-scope and out-of-scope lists, with sources.
 3. List missing or conflicting scope facts and assign owners and due dates (Appendix E).
 4. **Stop and report** if the requirements or the SDP are absent; do not invent scope.
 
-### Step 3 — Build the product breakdown
+#### Step 3 — Build the product breakdown
 
 1. List the deliverables the project must produce (releases, components, interfaces, data stores, documents, environments).
 2. Organize them into a deliverable hierarchy before any activity is named.
 3. Confirm each deliverable has an acceptance definition or mark it as a gap.
 
-### Step 4 — Build the WBS hierarchy
+#### Step 4 — Build the WBS hierarchy
 
 1. Create Levels 1–`WBS_MAX_DEPTH` from the product breakdown and the SAD/blueprint decomposition.
 2. Assign hierarchical numbers and stable `WBS-xxx` IDs.
@@ -450,13 +526,13 @@ Follow these steps in order.
 4. Verify the 100% rule and mutual exclusivity; record the evidence.
 5. Render the tree table and the Mermaid diagram.
 
-### Step 5 — Write the WBS dictionary
+#### Step 5 — Write the WBS dictionary
 
 1. Write one entry per leaf using the Section 4 format.
 2. Include exclusions, acceptance criteria, verification method, and trace links.
 3. Mark every estimate inherited from the SDP as `inherited` and every new estimate as `derived`, with its basis.
 
-### Step 6 — Generate task cards
+#### Step 6 — Generate task cards
 
 1. Split each work package into tasks that satisfy R3–R9.
 2. Prefer vertical slices; justify every horizontal task.
@@ -464,7 +540,7 @@ Follow these steps in order.
 4. Verify every path in "Files and components touched" against the repository; label planned paths.
 5. Assign `TASK-xxx` IDs sequentially in intended execution order and build `tasks/INDEX.md`.
 
-### Step 7 — Model dependencies and sequencing
+#### Step 7 — Model dependencies and sequencing
 
 1. Build the dependency matrix with types and justifications.
 2. Compute the critical path and float.
@@ -472,20 +548,20 @@ Follow these steps in order.
 4. Map waves and WBS elements to SDP milestones and releases.
 5. Check capacity per wave and flag over-allocation.
 
-### Step 8 — Reconcile with the development plan
+#### Step 8 — Reconcile with the development plan
 
 1. Roll up estimates to work-package and Level 2 totals.
 2. Compare with the SDP baseline; record variance, cause, and proposed action.
 3. List every deviation from the SDP WBS in the change log and Section 1.3.
 4. Do not silently change scope, dates, or budget — flag them for approval.
 
-### Step 9 — Complete traceability, RACI, and audit
+#### Step 9 — Complete traceability, RACI, and audit
 
 1. Fill Appendix A, F, and G.
 2. Run the 24-item self-audit and fill Appendix D.
 3. Fill Appendix E with all assumptions, conflicts, `TBD`s, and open items.
 
-### Step 10 — Self-check the output set
+#### Step 10 — Self-check the output set
 
 - [ ] `WBS.md`, `tasks/INDEX.md`, and every `tasks/TASK-*.md` exist and are non-empty.
 - [ ] Every requirement in scope maps to at least one WBS leaf and one task.
@@ -505,20 +581,20 @@ Follow these steps in order.
 
 Fix the documents before writing the final files if any item fails.
 
-### Step 11 — Write the files
+#### Step 11 — Write the files
 
 1. Write `docs/05-development/WBS.md`.
 2. Write `docs/05-development/tasks/INDEX.md`.
 3. Write every `docs/05-development/tasks/TASK-xxx.md`.
 4. Confirm each file exists and is non-empty.
 
-### Step 12 — Report back
+#### Step 12 — Report back
 
 Respond with a concise summary; do not paste the documents.
 
 ---
 
-## 8. Final Response Template
+### 7.7 Final Response Template
 
 ```markdown
 ## WBS and task breakdown created
@@ -563,7 +639,7 @@ Review and approve the WBS with the delivery lead, technical lead, and product o
 
 ---
 
-## 9. Non-Negotiable Constraints
+### 7.8 Non-Negotiable Constraints
 
 1. **Do not invent scope.** Decompose only what the inputs authorize; anything else is an `OPEN-xxx` item.
 2. **Do not invent repository paths, estimates, dates, or approvals.** Mark unknowns as `TBD` with an owner and due date.
@@ -577,7 +653,7 @@ Review and approve the WBS with the delivery lead, technical lead, and product o
 
 ---
 
-## 10. Quick Reference — Required Output at a Glance
+### 7.9 Quick Reference — Required Output at a Glance
 
 | Question | Answer |
 |---|---|
